@@ -3,6 +3,7 @@ export interface IUser {
     email: string;
     age?: number;
     phone?: string;
+    image?: string;
     preferences: Genres[];
     gender?: string;
     bio?: string;
