@@ -26,14 +26,12 @@ const RootLayout = ({ children }: RootLayoutProps) => {
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
           <Header />
-          <main className="min-h-svh pt-6">
             {children}
-          </main>
           <Footer />
         </ThemeProvider>
       </body>
