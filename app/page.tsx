@@ -1,9 +1,11 @@
-import { Button } from "@/components/ui/button";
+import { memo } from "react";
 
-export default function Home() {
+const Home = ()=>{
   return (
-    <div>
-      <Button>Hello</Button>
-    </div>
-  );
-}
+    <main  >
+      <h1>Welcome Home</h1>
+    </main>
+  )
+};
+
+export default memo(Home);

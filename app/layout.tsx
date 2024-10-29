@@ -1,10 +1,15 @@
+import { memo } from "react";
 import { Metadata } from "next";
 import { RootLayoutProps } from "@/types/props";
 import { ThemeProvider } from "@/components/provider/ThemeProvider";
-import { Inter } from 'next/font/google'
-import "./globals.css";
+import { Plus_Jakarta_Sans } from 'next/font/google'
+import "../styles/globals.css";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Plus_Jakarta_Sans({
+  subsets: ["vietnamese"],
+  weight: ["300", "400", "700", "700"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "Readify",
@@ -30,4 +35,4 @@ const RootLayout = ({ children }: RootLayoutProps) => {
   );
 };
 
-export default RootLayout;
+export default memo(RootLayout);
