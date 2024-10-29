@@ -16,8 +16,8 @@ import Link from 'next/link';
 
 
 export default function LoginForm() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -25,17 +25,19 @@ export default function LoginForm() {
       email: "",
       password: "",
     },
-  })
+  });
 
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
-    setIsLoading(true)
-    setError("")
+    setIsLoading(true);
+    setError("");
     try {
+      console.log(values);
 
     } catch (error) {
-      setError("Failed to login. Please try again.")
+      console.log(error);
+      setError("Failed to login. Please try again.");
     } finally {
-      setIsLoading(false)  
+      setIsLoading(false);
     }
   }
 
@@ -88,9 +90,9 @@ export default function LoginForm() {
       </CardContent>
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          Don't have an account? <Link href="/register" className="underline">Sign up</Link>
+          Don&apos;t have an account? <Link href="/register" className="underline">Sign up</Link>
         </p>
       </CardFooter>
     </Card>
-  )
+  );
 }

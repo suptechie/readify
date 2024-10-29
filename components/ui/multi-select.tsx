@@ -33,13 +33,9 @@ const multiSelectVariants = cva(
       },
    }
 );
-
-/**
- * Props for MultiSelect component
- */
 interface MultiSelectProps
    extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-      VariantProps<typeof multiSelectVariants> {
+   VariantProps<typeof multiSelectVariants> {
    /**
     * An array of option objects to be displayed in the multi-select component.
     * Each option object has a label, value, and an optional icon.
@@ -50,7 +46,7 @@ interface MultiSelectProps
       /** The unique value associated with the option. */
       value: string;
       /** Optional icon component to display alongside the option. */
-      icon?: React.ComponentType<{ className?: string }>;
+      icon?: React.ComponentType<{ className?: string; }>;
    }[];
 
    /**
@@ -111,9 +107,11 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
          animation = 0,
          maxCount = 3,
          modalPopover = false,
+         //eslint-disable-next-line react/display-name
          asChild = false,
          className,
          ...props
+         //eslint-disable-next-line react/display-name
       },
       ref
    ) => {
