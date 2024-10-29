@@ -107,7 +107,6 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
          animation = 0,
          maxCount = 3,
          modalPopover = false,
-         // eslint-disable-next-line @typescript-eslint/no-empty-interface
          asChild = false,
          className,
          ...props
@@ -164,7 +163,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 
       return (
          <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen} modal={modalPopover}>
-            <PopoverTrigger asChild>
+            <PopoverTrigger asChild={asChild}>
                <Button
                   ref={ref}
                   {...props}
