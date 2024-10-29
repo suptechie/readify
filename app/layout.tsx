@@ -2,8 +2,10 @@ import { memo } from "react";
 import { Metadata } from "next";
 import { RootLayoutProps } from "@/types/props";
 import { ThemeProvider } from "@/components/provider/ThemeProvider";
-import { Plus_Jakarta_Sans } from 'next/font/google'
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import "../styles/globals.css";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 
 const inter = Plus_Jakarta_Sans({
   subsets: ["vietnamese"],
@@ -28,7 +30,11 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Header />
+          <main className="min-h-svh pt-6">
+            {children}
+          </main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
