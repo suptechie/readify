@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const RegisterPage = () => {
   return (
-    <div className="flex h-svh max-h-[620px] overflow-hidden">
+    <div className="flex h-svh md:max-h-[620px] overflow-hidden">
       <Image
         src={'/assets/chair-reader.png'}
         height={1000}
