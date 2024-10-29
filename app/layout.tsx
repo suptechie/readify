@@ -4,8 +4,9 @@ import { RootLayoutProps } from "@/types/props";
 import { ThemeProvider } from "@/components/provider/ThemeProvider";
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import "../styles/globals.css";
-import Footer from "@/components/layout/Footer";
+// import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+import { cn } from "@/lib/utils";
 
 const inter = Plus_Jakarta_Sans({
   subsets: ["vietnamese"],
@@ -22,17 +23,17 @@ const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`antialiased ${inter.className}`}
+        className={cn('remove-scrollbar min-h-[600px] antialiased', inter.className)}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
           <Header />
-            {children}
-          <Footer />
+          {children}
+          {/* <Footer /> */}
         </ThemeProvider>
       </body>
     </html>

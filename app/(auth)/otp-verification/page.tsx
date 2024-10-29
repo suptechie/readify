@@ -1,6 +1,10 @@
+import OtpForm from "@/components/forms/auth/OtpForm";
+
 const page = () => {
   return (
-    <div>page</div>
+    <main>
+      <OtpForm />
+    </main>
   )
 }
 
