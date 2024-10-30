@@ -5,7 +5,7 @@ const LoginPage = () => {
   return (
     <main className="flex h-svh max-h-[620px]">
         <Image
-          src={'/assets/sofa-reader.png'}
+          src={'/assets/images/sofa-reader.png'}
           height={1000}
           width={1000}
           alt="patient"

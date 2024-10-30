@@ -5,10 +5,11 @@ const RegisterPage = () => {
   return (
     <div className="flex h-svh md:max-h-[620px] overflow-hidden">
       <Image
-        src={'/assets/chair-reader.png'}
+        src={'/assets/images/chair-reader.png'}
         height={1000}
         width={1000}
         alt="patient"
+        priority
         className="side-img max-w-[50%]"
       />
       <section className="remove-scrollbar container">

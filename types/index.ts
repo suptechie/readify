@@ -25,29 +25,29 @@ export enum Genres {
 
 export interface IUser {
     _id?: string;
-    email: string;
+    email?: string;
     age?: number;
     phone?: string;
     image?: string;
-    preferences: Genres[];
+    preferences?: Genres[];
     gender?: string;
     bio?: string;
-    username: string;
-    password: string;
-    createdAt: Date;
-    updatedAt: Date;
+    username?: string;
+    password?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 export interface IArticle {
     _id?: string;
-    title: string;
-    content: string;
-    author: IUser["_id"];
+    title?: string;
+    content?: string;
+    author?: IUser["_id"];
     genre: Genres;
     image?: string;
     tags?: string[];
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 export interface IArticleInteraction {
