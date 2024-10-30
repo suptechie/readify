@@ -1,9 +1,9 @@
-import { MONGO_URL } from '@/config';
+import { MONGO_URI } from '@/config';
 import { connect, connection } from 'mongoose';
 
 const connectDB = async (): Promise<void> => {
     try {
-        connect(MONGO_URL);
+        connect(MONGO_URI);
         connection.on('connected', () => {
             console.log('MongoDB connected successfully');
         })

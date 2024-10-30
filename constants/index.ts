@@ -26,3 +26,17 @@ export const GENDER = [
   { id: "female", label: "Female" },
   { id: "other", label: "Other" }
 ]
+
+const base = '/assets/profile'
+export const AVATARIMAGES = [
+  `${base}/1.jpg`,
+  `${base}/2.jpg`,
+  `${base}/3.jpg`,
+  `${base}/4.jpg`,
+  `${base}/5.jpg`,
+  `${base}/6.jpg`,
+  `${base}/7.jpg`,
+  `${base}/8.jpg`,
+  `${base}/10.jpg`,
+  `${base}/11.jpg`,
+]

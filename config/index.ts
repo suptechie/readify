@@ -1,1 +1,1 @@
-export const MONGO_URL = process.env.MONGO_URL as string;
+export const MONGO_URI = process.env.MONGO_URI as string;

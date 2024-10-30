@@ -7,6 +7,7 @@ import "../styles/globals.css";
 // import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Plus_Jakarta_Sans({
   subsets: ["vietnamese"],
@@ -27,13 +28,13 @@ const RootLayout = ({ children }: RootLayoutProps) => {
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
           <Header />
           {children}
-          {/* <Footer /> */}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

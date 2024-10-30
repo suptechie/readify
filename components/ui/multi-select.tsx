@@ -123,6 +123,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                ref={ref}
                role="combobox"
                aria-expanded={isPopoverOpen}
+               aria-controls="combobox"
                aria-haspopup="listbox"
                tabIndex={0}
                onKeyDown={(e) => {

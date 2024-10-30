@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -17,15 +17,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Loader2 } from "lucide-react";
-import { GENDER, GENRES } from '@/constants';
+import { AVATARIMAGES, GENDER, GENRES } from '@/constants';
 import { registerFormSchema } from "@/lib/utils/form-validation";
 import type { z } from "zod";
-import { createUser } from "@/actions/actions";
+import { createUser } from "@/actions/user.auth";
 import { Genres } from "@/types/entities";
+import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
-export default function EnhancedRegisterForm() {
+const RegisterForm = () =>{
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
@@ -39,40 +43,44 @@ export default function EnhancedRegisterForm() {
       bio: "",
       password: "",
       confirmPassword: "",
-      name: ""
+      name: "",
+      image: AVATARIMAGES[0]
     },
   });
 
-  async function onSubmit({ age, bio, confirmPassword, email, gender, password, phone, preference, username }: z.infer<typeof registerFormSchema>) {
+  async function onSubmit({ preference, age, confirmPassword, password, ...values }: z.infer<typeof registerFormSchema>) {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       if (confirmPassword !== password) {
         form.setError('confirmPassword', { message: 'Passwords do not match' });
         return;
       }
       const { message } = await createUser({
-        username,
-        email,
         age: +age,
-        phone,
-        gender,
-        bio,
+        preferences: preference as Genres[],
         password,
-        preferences: preference as Genres[]
+        ...values
       });
-      
-      if (message) {        
+
+      if (message) {
         form.setError("email", { message });
+      } else {
+        toast({
+          title: "Registration Successful 🚀. Please Login to continue",
+          variant: "success"
+        });
+        form.reset();
+        router.push('/');
       }
     } catch (error) {
       console.error("Registration failed:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
   return (
-    <Card className="w-full max-w-[500px]">
+    <Card className="w-full mt-6">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
         <CardDescription>
@@ -168,6 +176,43 @@ export default function EnhancedRegisterForm() {
             />
             <FormField
               control={form.control}
+              name="image"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Select Avatar</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="grid grid-cols-4 gap-4"
+                    >
+                      {AVATARIMAGES.map((src, index) => (
+                        <FormItem key={index} className="space-y-0">
+                          <FormControl>
+                            <RadioGroupItem
+                              value={src}
+                              id={`avatar-${index}`}
+                              className="peer sr-only"
+                            />
+                          </FormControl>
+                          <FormLabel
+                            htmlFor={`avatar-${index}`}
+                            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
+                          >
+                            <Avatar className="w-16 h-16">
+                              <AvatarImage src={src} alt={`Avatar ${index + 1}`} />
+                              <AvatarFallback>Avatar</AvatarFallback>
+                            </Avatar>
+                          </FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="gender"
               render={({ field }) => (
                 <FormItem className="space-y-3">
@@ -253,3 +298,5 @@ export default function EnhancedRegisterForm() {
     </Card>
   );
 }
+
+export default memo(RegisterForm);

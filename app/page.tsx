@@ -1,4 +1,3 @@
-import connectDB from "@/lib/db/connectDb";
 import { memo } from "react";
 
 const Home =async ()=>{
