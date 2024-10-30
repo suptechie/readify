@@ -3,8 +3,7 @@ import { Genres, IArticle, IArticleInteraction, IBlockedArticle, IUser } from "@
 export const user: IUser = {
   _id: "user-1",
   email: "john@example.com",
-  age: 35,
-  phone: "+1 (555) 123-4567",
+  age: '35',
   image:"/assets/me.jpg",
   preferences: [Genres.TECHNOLOGY, Genres.SCIENCE, Genres.BUSINESS],
   gender: "male",
