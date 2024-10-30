@@ -141,7 +141,7 @@ const RegisterForm = () => {
                   <FormItem>
                     <FormLabel>Age *</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="27" min={1}  {...field} />
+                      <Input type="number" placeholder="Your Age" min={1}  {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

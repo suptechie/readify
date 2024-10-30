@@ -42,7 +42,7 @@ export default function LoginForm() {
   }
 
   return (
-    <Card className="w-[350px]">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Login</CardTitle>
         <CardDescription>Enter your email and password to login.</CardDescription>
