@@ -20,7 +20,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Loader2 } from "lucide-react";
 import { AVATARIMAGES, GENDER, GENRES } from '@/constants';
-import { registerFormSchema } from "@/lib/utils/form-validation";
+import { registerFormSchema } from "@/components/forms/auth/form-validation";
 import type { z } from "zod";
 import { createUser } from "@/actions/user.auth";
 import { Genres } from "@/types/entities";

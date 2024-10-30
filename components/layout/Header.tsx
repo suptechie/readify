@@ -1,23 +1,27 @@
-'use client'
-
-import Image from "next/image"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Menu, User, Settings, LogOut } from "lucide-react"
+} from "@/components/ui/dropdown-menu";
+import { Menu, User, Settings, LogInIcon } from "lucide-react";
+import LogoutButton from "../button/LogoutButton";
+import getTokenData from "@/lib/utils/getTokenData";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { memo } from "react";
 
-const Header = () => {
+const Header = async () => {
+  const data = await getTokenData();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="pl-4 pr-3"> 
+      <div className="pl-4 pr-3">
         <div className="flex h-14 items-center ">
-          <div className="flex flex-1 items-center space-x-16"> 
+          <div className="flex flex-1 items-center space-x-16">
             <Link href="/" className="flex items-center space-x-2">
               <Image
                 src="/assets/icons/books.svg"
@@ -40,11 +44,20 @@ const Header = () => {
               </Link>
             </nav>
           </div>
-          <div className="flex items-center"> 
+          <div className="flex items-center">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full"> 
-                  <Menu className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  {data && data.image ? (
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={data.image} alt="Profile" />
+                      <AvatarFallback>
+                        U
+                      </AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <Menu className="h-5 w-5" />
+                  )}
                   <span className="sr-only">Open menu</span>
                 </Button>
               </DropdownMenuTrigger>
@@ -65,30 +78,40 @@ const Header = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="sm:hidden" />
-                <DropdownMenuItem asChild>
-                  <Link href="/profile" className="w-full">
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/settings" className="w-full">
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
+                {data ? (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link href="/profile" className="w-full">
+                        <User className="mr-2 h-4 w-4" />
+                        <span>Profile</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/settings" className="w-full">
+                        <Settings className="mr-2 h-4 w-4" />
+                        <span>Settings</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <LogoutButton />
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link href="/login" className="w-full">
+                        <LogInIcon className="mr-2 h-4 w-4" />
+                        <span>Login</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
         </div>
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default memo(Header);

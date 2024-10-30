@@ -8,7 +8,6 @@ import { ErrorResponse, StatusCode } from "@/types";
 import { IUser } from "@/types/entities";
 import { validateUserData } from "@/actions/helpers/dataValidations";
 import { cookies } from "next/headers";
-import { NODE_ENV } from "@/config";
 import JWTService from "@/lib/services/JWTService";
 
 connectDb();
@@ -51,11 +50,11 @@ export const validateUser = async (email: string, password: string): Promise<Err
             return { message: "Invalid Credentials" };
         }
 
-        const token = jwt.createToken(user._id, user.email!);
+        const token = jwt.createToken(user._id, user.image!);
 
         (await cookies()).set("token", token, {
             httpOnly: true,
-            secure: NODE_ENV === 'production',
+            secure: true,
             path: "/",
             maxAge: 60 * 60 * 24 * 30
         });
@@ -66,3 +65,13 @@ export const validateUser = async (email: string, password: string): Promise<Err
     }
 };
 
+
+
+export const logout = async (): Promise<void> => {
+    (await cookies()).set("token", "", {
+        httpOnly: true,
+        secure: true,
+        path: "/",
+        maxAge: 0,
+    });
+};

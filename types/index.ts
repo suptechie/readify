@@ -3,6 +3,11 @@ export interface ErrorResponse {
     code?: StatusCode;
 }
 
+export type TokenPayload = {
+    id:string;
+    image:string;
+}
+
 export enum StatusCode {
     Success = 200,
     Created = 201,
@@ -19,9 +24,4 @@ export enum StatusCode {
     NotImplemented = 501,
     BadGateway = 502,
     ServiceUnavailable = 503,
-}
-
-export type TokenPayload = {
-    id:string;
-    image:string;
 }
