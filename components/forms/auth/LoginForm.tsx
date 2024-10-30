@@ -12,12 +12,16 @@ import { RotateCw } from "lucide-react";
 import { loginFormSchema } from '@/lib/utils/form-validation';
 import { z } from 'zod';
 import Link from 'next/link';
+import { validateUser } from '@/actions/user.auth';
+import { toast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -31,7 +35,17 @@ export default function LoginForm() {
     setIsLoading(true);
     setError("");
     try {
-      console.log(values);
+      const response = await validateUser(values.email, values.password);
+      if(response?.message){
+        setError(response.message)
+      }else{
+        toast({
+          title:"Authentication Completed ✅",
+          description:"",
+          variant:"success"
+        });
+        router.push("/");
+      }
 
     } catch (error) {
       console.log(error);

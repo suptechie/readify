@@ -20,3 +20,8 @@ export enum StatusCode {
     BadGateway = 502,
     ServiceUnavailable = 503,
 }
+
+export type TokenPayload = {
+    id:string;
+    image:string;
+}
