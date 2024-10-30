@@ -26,10 +26,11 @@ import { createUser } from "@/actions/user.auth";
 import { Genres } from "@/types/entities";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { StatusCode } from "@/types";
 
-const RegisterForm = () =>{
+const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
@@ -37,9 +38,8 @@ const RegisterForm = () =>{
       username: "",
       email: "",
       age: '',
-      phone: "",
       preference: [],
-      gender: undefined,
+      gender: "male",
       bio: "",
       password: "",
       confirmPassword: "",
@@ -55,22 +55,26 @@ const RegisterForm = () =>{
         form.setError('confirmPassword', { message: 'Passwords do not match' });
         return;
       }
-      const { message } = await createUser({
-        age: +age,
+      const response = await createUser({
+        age: age,
         preferences: preference as Genres[],
         password,
         ...values
       });
 
-      if (message) {
-        form.setError("email", { message });
+      if (response) {
+        if (response.code === StatusCode.Conflict) {
+          form.setError("email", { message: response.message });
+        } else {
+          form.setError("root", { message: response.message });
+        }
       } else {
         toast({
           title: "Registration Successful 🚀. Please Login to continue",
           variant: "success"
         });
         form.reset();
-        router.push('/');
+        router.push('/login');
       }
     } catch (error) {
       console.error("Registration failed:", error);
@@ -95,9 +99,9 @@ const RegisterForm = () =>{
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel>Full Name *</FormLabel>
                   <FormControl>
-                    <Input placeholder="johndoe" {...field} />
+                    <Input placeholder="John Doe" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -108,9 +112,9 @@ const RegisterForm = () =>{
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Username *</FormLabel>
                   <FormControl>
-                    <Input placeholder="johndoe" {...field} />
+                    <Input placeholder="mr_anonimous" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -121,9 +125,9 @@ const RegisterForm = () =>{
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Email *</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="john@example.com" {...field} />
+                    <Input type="email" placeholder="john@gmail.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -135,22 +139,9 @@ const RegisterForm = () =>{
                 name="age"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Age</FormLabel>
+                    <FormLabel>Age *</FormLabel>
                     <FormControl>
-                      <Input type="number" min={1}  {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Phone</FormLabel>
-                    <FormControl>
-                      <Input type="tel" placeholder="+1234567890" {...field} />
+                      <Input type="number" placeholder="27" min={1}  {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -162,7 +153,7 @@ const RegisterForm = () =>{
               name="preference"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="mr-4">Preferred Genres</FormLabel>
+                  <FormLabel className="mr-4">Preferred Genres *</FormLabel>
                   <FormControl>
                     <MultiSelect
                       options={GENRES.map(genre => ({ label: genre.label, value: genre.id }))}
@@ -179,7 +170,7 @@ const RegisterForm = () =>{
               name="image"
               render={({ field }) => (
                 <FormItem className="space-y-3">
-                  <FormLabel>Select Avatar</FormLabel>
+                  <FormLabel>Select Avatar *</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -216,7 +207,7 @@ const RegisterForm = () =>{
               name="gender"
               render={({ field }) => (
                 <FormItem className="space-y-3">
-                  <FormLabel>Gender</FormLabel>
+                  <FormLabel>Gender *</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -247,7 +238,7 @@ const RegisterForm = () =>{
                   <FormLabel>Bio</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Tell us a little bit about yourself"
+                      placeholder="I Write About Aliens"
                       className="resize-none"
                       {...field}
                     />
@@ -261,7 +252,7 @@ const RegisterForm = () =>{
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Password *</FormLabel>
                   <FormControl>
                     <Input type="password" {...field} />
                   </FormControl>
@@ -274,7 +265,7 @@ const RegisterForm = () =>{
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>Confirm Password *</FormLabel>
                   <FormControl>
                     <Input type="password" {...field} />
                   </FormControl>
@@ -282,6 +273,7 @@ const RegisterForm = () =>{
                 </FormItem>
               )}
             />
+            <FormMessage />
             <Button className="w-full" type="submit" disabled={isLoading}>
               {isLoading ? (
                 <>
@@ -297,6 +289,6 @@ const RegisterForm = () =>{
       </CardContent>
     </Card>
   );
-}
+};
 
 export default memo(RegisterForm);

@@ -27,8 +27,7 @@ export interface IUser {
     _id?: string;
     name?:string;
     email?: string;
-    age?: number;
-    phone?: string;
+    age?: string;
     image?: string;
     preferences?: Genres[];
     gender?: string;
