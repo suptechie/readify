@@ -1,3 +1,28 @@
+import { MongoClient, Db } from 'mongodb'
+
+export enum Genres {
+    TECHNOLOGY = "technology",
+    SCIENCE = "science",
+    HEALTH = "health",
+    TRAVEL = "travel",
+    FINANCE = "finance",
+    LIFESTYLE = "lifestyle",
+    EDUCATION = "education",
+    BUSINESS = "business",
+    ENTERTAINMENT = "entertainment",
+    ENVIRONMENT = "environment",
+    SPORTS = "sports",
+    HISTORY = "history",
+    CULTURE = "culture",
+    POLITICS = "politics",
+    PHILOSOPHY = "philosophy",
+    PSYCHOLOGY = "psychology",
+    ART = "art",
+    LITERATURE = "literature",
+    FOOD = "food",
+    FASHION = "fashion"
+}
+
 export interface IUser {
     _id?: string;
     email: string;
@@ -42,25 +67,18 @@ export interface IBlockedArticle {
     updatedAt: Date;
 }
 
-export enum Genres {
-    TECHNOLOGY = "technology",
-    SCIENCE = "science",
-    HEALTH = "health",
-    TRAVEL = "travel",
-    FINANCE = "finance",
-    LIFESTYLE = "lifestyle",
-    EDUCATION = "education",
-    BUSINESS = "business",
-    ENTERTAINMENT = "entertainment",
-    ENVIRONMENT = "environment",
-    SPORTS = "sports",
-    HISTORY = "history",
-    CULTURE = "culture",
-    POLITICS = "politics",
-    PHILOSOPHY = "philosophy",
-    PSYCHOLOGY = "psychology",
-    ART = "art",
-    LITERATURE = "literature",
-    FOOD = "food",
-    FASHION = "fashion"
+declare global {
+    var _mongoClientPromise: Promise<MongoClient>
+}
+
+export interface Collections {
+    users: IUser;
+    articles: IArticle;
+    articleInteractions: IArticleInteraction;
+    blockedArticles: IBlockedArticle;
+}
+
+export type MongoConnection = {
+    client: MongoClient;
+    db: Db;
 }
