@@ -1,4 +1,4 @@
-import { Genres, IArticle, IArticleInteraction, IBlockedArticle, IUser } from "@/types";
+import { Genres, IArticle, IArticleInteraction, IBlockedArticle, IUser } from "@/types/entities";
 
 export const user: IUser = {
   _id: "user-1",

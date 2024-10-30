@@ -22,7 +22,7 @@ import { GENDER, GENRES } from '@/constants';
 import { registerFormSchema } from "@/lib/utils/form-validation";
 import type { z } from "zod";
 import { createUser } from "@/actions/actions";
-import { Genres } from "@/types";
+import { Genres } from "@/types/entities";
 
 export default function EnhancedRegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,16 +39,18 @@ export default function EnhancedRegisterForm() {
       bio: "",
       password: "",
       confirmPassword: "",
+      name: ""
     },
   });
 
   async function onSubmit({ age, bio, confirmPassword, email, gender, password, phone, preference, username }: z.infer<typeof registerFormSchema>) {
     try {
-      if(confirmPassword !== password) {
+      setIsLoading(true)
+      if (confirmPassword !== password) {
         form.setError('confirmPassword', { message: 'Passwords do not match' });
         return;
       }
-      await createUser({
+      const { message } = await createUser({
         username,
         email,
         age: +age,
@@ -58,8 +60,14 @@ export default function EnhancedRegisterForm() {
         password,
         preferences: preference as Genres[]
       });
+      
+      if (message) {        
+        form.setError("email", { message });
+      }
     } catch (error) {
       console.error("Registration failed:", error);
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -74,6 +82,19 @@ export default function EnhancedRegisterForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="johndoe" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="username"

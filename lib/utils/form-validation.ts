@@ -6,6 +6,7 @@ export const loginFormSchema = z.object({
 });
 
 export const registerFormSchema = z.object({
+    name: z.string({ message: "Name is required" }),
     email: z.string().email({ message: "Invalid email address" }),
     age: z.string({ message: "Age is required" }),
     phone: z.string().min(10, { message: "Phone number must be at least 10 characters" }),
