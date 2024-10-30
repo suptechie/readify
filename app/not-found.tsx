@@ -19,7 +19,7 @@ export default function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center transition-colors duration-200 bg-background">
       <h1 className="mb-4 text-6xl font-bold text-primary">404</h1>
-      <p className="mb-8 text-xl text-muted-foreground">Oops! The page you're looking for doesn't exist.</p>
+      <p className="mb-8 text-xl text-muted-foreground">Oops! The page you&apos;re looking for doesn&apos;t exist.</p>
       <div className="space-y-4">
         <Button asChild className="px-6 py-2">
           <Link href="/">Go back home</Link>
