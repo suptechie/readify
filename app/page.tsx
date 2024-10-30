@@ -1,6 +1,7 @@
+import connectDB from "@/lib/db/connectDb";
 import { memo } from "react";
 
-const Home = ()=>{
+const Home =async ()=>{
   return (
     <main  >
       <h1>Welcome Home</h1>

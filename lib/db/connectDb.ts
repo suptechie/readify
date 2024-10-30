@@ -3,32 +3,20 @@ import { connect, connection } from 'mongoose';
 
 const connectDB = async (): Promise<void> => {
     try {
-        await connect(MONGO_URL!, {
-            serverSelectionTimeoutMS: 30000,
-        });
+        connect(MONGO_URL);
+        connection.on('connected', () => {
+            console.log('MongoDB connected successfully');
+        })
+
+        connection.on('error', (err) => {
+            console.log('MongoDB connection error. Please make sure MongoDB is running. ' + err);
+            process.exit();
+        })
+
     } catch (error) {
-        console.error('Error connecting to MongoDB:', error);
-        process.exit(1);
+        console.log('Something goes wrong!');
+        console.log(error);
     }
-
-    connection.on('connected', () => {
-        console.log('Mongoose connected to DB');
-    });
-
-    connection.on('error', (err) => {
-        console.error('Mongoose connection error:', err);
-    });
-
-    connection.on('disconnected', () => {
-        console.log('Mongoose disconnected from DB');
-    });
-
-
-    process.on('SIGINT', async () => {
-        await connection.close();
-        console.log('Mongoose connection closed due to app termination');
-        process.exit(0);
-    });
 };
 
 export default connectDB;
