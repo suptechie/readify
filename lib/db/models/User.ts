@@ -11,6 +11,10 @@ const topicSchema = new Schema<IUser>({
     gender: { type: String, required: true },
     bio: String,
     password: { type: String, required: true }
+}, {
+    versionKey: false,
+    minimize: false,
+    timestamps: true
 });
 
 const User = (models.User as Model<IUser>) || model<IUser>("User", topicSchema);

@@ -7,25 +7,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { IUser } from '@/types/entities';
-import {  CardFooter } from "@/components/ui/card";
+import { CardFooter } from "@/components/ui/card";
 import { Pencil, Check, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { user } from '@/constants/data';
 
-export default function Component() {
-  const user = {
-    _id: '1',
-    name: 'John Doe',
-    email: 'john@example.com',
-    age: '30',
-    image: '/assets/profile/1.jpg',
-    gender: 'male',
-    bio: 'I love coding and building amazing web applications!',
-    username: 'johndoe',
-    createdAt: "1/1/2023",
-    updatedAt: "1/1/2023",
-  };
+export default function Component({ userId }: { userId: string; }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [editedUser, setEditedUser] = useState<IUser>(user);
+  const [editedUser, setEditedUser] = useState<IUser>(user);  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setEditedUser({ ...editedUser, [e.target.name]: e.target.value });

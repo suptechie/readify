@@ -1,24 +1,27 @@
-'use client';
+import ProfileModel from '@/components/models/ProfileModel';
+import { fetchWithToken } from '@/lib/fetch/fetchWithToken';
+import React from 'react';
 
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { memo, useCallback } from "react";
-import UserProfile from '@/components/common/UserProfile';
-import { useRouter } from "next/navigation";
+const page = async () => {
+    try {
+        const response = await fetchWithToken('/api/user');
 
-const ProfilePage = () => {
-    const router = useRouter();
-    const handleOpenChange = useCallback(() => {
-        router.back();
-    },[router]);
+        if (!response.ok) {
+            const errorData = await response.json();
+            return <div>Err or: {errorData.error}</div>;
+        }
 
-    return (
-        <Dialog open onOpenChange={handleOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
-                <DialogTitle>User Profile</DialogTitle>
-                <UserProfile />
-            </DialogContent>
-        </Dialog>
-    );
+        const { user } = await response.json();
+
+        if (!user) {
+            return <div>No user found</div>;
+        }
+
+   
+        return <ProfileModel userId={user.id} />;
+    } catch (error) {
+        return <div>Error: {error instanceof Error ? error.message : 'Something went wrong'}</div>;
+    }
 };
 
-export default memo(ProfilePage);
+export default page;

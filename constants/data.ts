@@ -4,7 +4,7 @@ export const user: IUser = {
   _id: "user-1",
   email: "john@example.com",
   age: '35',
-  image:"/assets/me.jpg",
+  image:"/assets/profile/3.jpg",
   preferences: [Genres.TECHNOLOGY, Genres.SCIENCE, Genres.BUSINESS],
   gender: "male",
   bio: "Passionate software engineer and tech enthusiast.",

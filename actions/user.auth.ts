@@ -1,6 +1,6 @@
 "use server";
 
-import connectDb from "@/lib/db/connectDb";
+import connectDb from "@/lib/db/connectDB";
 import User from "@/lib/db/models/User";
 import { BcryptService } from "@/lib/services/BcryptService";
 import { ErrorMessage, ErrorResponse, StatusCode } from "@/types";
@@ -8,6 +8,7 @@ import { IUser } from "@/types/entities";
 import { validateUserData } from "@/actions/helpers/dataValidations";
 import { cookies } from "next/headers";
 import JWTService from "@/lib/services/JWTService";
+import { NODE_ENV } from "@/config";
 
 connectDb();
 
@@ -53,8 +54,6 @@ export const validateUser = async (email: string, password: string): Promise<Err
 
         (await cookies()).set("token", token, {
             httpOnly: true,
-            secure: true,
-            path: "/",
             maxAge: 60 * 60 * 24 * 30
         });
 
