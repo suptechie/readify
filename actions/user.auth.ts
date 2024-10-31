@@ -1,6 +1,6 @@
 "use server";
 
-import connectDb from "@/lib/db/connectDBs";
+import connectDb from "@/lib/db/connectDB";
 import User from "@/lib/db/models/User";
 import { BcryptService } from "@/lib/services/BcryptService";
 import { ErrorMessage, ErrorResponse, StatusCode } from "@/types";
