@@ -11,7 +11,6 @@ const getTokenData = async (): Promise<TokenPayload | null> => {
     }
 
     const data = jwt.verifyToken(token.value);
-
     if ((data as TokenPayload).id) {
         return data as TokenPayload;
     } else {

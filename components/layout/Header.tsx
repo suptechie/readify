@@ -15,8 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { memo } from "react";
 
 const Header = async () => {
-  const data = await getTokenData();
-
+  const userData = await getTokenData();
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="pl-4 pr-3">
@@ -48,9 +47,9 @@ const Header = async () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="rounded-full">
-                  {data && data.image ? (
+                  {userData && userData.image ? (
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={data.image} alt="Profile" />
+                      <AvatarImage src={userData.image} alt="Profile" />
                       <AvatarFallback>
                         U
                       </AvatarFallback>
@@ -78,7 +77,7 @@ const Header = async () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="sm:hidden" />
-                {data ? (
+                {userData ? (
                   <>
                     <DropdownMenuItem asChild>
                       <Link href="/profile" className="w-full">

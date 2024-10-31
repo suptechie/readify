@@ -10,7 +10,6 @@ export const middleware = async (request: NextRequest) => {
     if (token && jwt.verifyToken(token.value)) {
         return NextResponse.rewrite(new URL('/404', request.url));
     }
-    
 
     return NextResponse.next();
 };

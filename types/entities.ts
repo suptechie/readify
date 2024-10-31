@@ -34,8 +34,8 @@ export interface IUser {
     bio?: string;
     username?: string;
     password?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
 }
 
 export interface IArticle {
