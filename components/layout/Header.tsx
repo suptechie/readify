@@ -13,6 +13,7 @@ import LogoutButton from "../button/LogoutButton";
 import getTokenData from "@/lib/utils/getTokenData";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { memo } from "react";
+import SettingsButton from "../button/SettingsButton";
 
 const Header = async () => {
   const userData = await getTokenData();
@@ -85,12 +86,7 @@ const Header = async () => {
                         <span>Profile</span>
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/settings" className="w-full">
-                        <Settings className="mr-2 h-4 w-4" />
-                        <span>Settings</span>
-                      </Link>
-                    </DropdownMenuItem>
+                    <SettingsButton />
                     <DropdownMenuSeparator />
                     <LogoutButton />
                   </>
