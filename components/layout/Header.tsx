@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu, User, Settings, LogInIcon } from "lucide-react";
+import { Menu, User, LogInIcon } from "lucide-react";
 import LogoutButton from "../button/LogoutButton";
 import getTokenData from "@/lib/utils/getTokenData";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

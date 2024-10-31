@@ -63,6 +63,7 @@ export const getTokenDetailsServer = async (req:NextRequest): Promise<TokenDetai
                 }
             };
         }
+        // eslint-disable-next-line
     } catch (error) {
         return {
             success: false,
