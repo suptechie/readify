@@ -18,7 +18,7 @@ const page = async () => {
         }
 
    
-        return <ProfileModel userId={user.id} />;
+        return <ProfileModel user={user} />;
     } catch (error) {
         return <div>Error: {error instanceof Error ? error.message : 'Something went wrong'}</div>;
     }

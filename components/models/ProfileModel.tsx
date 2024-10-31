@@ -4,8 +4,9 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { memo, useCallback } from "react";
 import UserProfile from '@/components/common/UserProfile';
 import { useRouter } from "next/navigation";
+import { IUser } from "@/types/entities";
 
-const ProfileModel = ({ userId }: { userId: string; }) => {
+const ProfileModel = ({ user }: { user: IUser; }) => {
     const router = useRouter();
     const handleOpenChange = useCallback(() => {
         router.back();
@@ -16,7 +17,7 @@ const ProfileModel = ({ userId }: { userId: string; }) => {
         <Dialog open onOpenChange={handleOpenChange}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogTitle>User Profile</DialogTitle>
-                <UserProfile userId={userId} />
+                <UserProfile user={user} />
             </DialogContent>
         </Dialog>
     );

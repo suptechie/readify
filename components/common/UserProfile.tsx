@@ -10,9 +10,8 @@ import { IUser } from '@/types/entities';
 import { CardFooter } from "@/components/ui/card";
 import { Pencil, Check, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { user } from '@/constants/data';
 
-export default function Component({ userId }: { userId: string; }) {
+export default function Component({ user }: { user: IUser; }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState<IUser>(user);  
 

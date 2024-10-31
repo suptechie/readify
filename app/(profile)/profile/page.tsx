@@ -31,7 +31,7 @@ const page = async () => {
                         <CardTitle className="text-2xl font-bold text-center">User Profile</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <UserProfile userId="'adsf" />
+                        <UserProfile user={user} />
                     </CardContent>
                 </Card>
             </div >
