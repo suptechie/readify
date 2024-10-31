@@ -27,8 +27,6 @@ export const GENDER = [
   { id: "other", label: "Other" }
 ]
 
-export const  ERROR_DEFAULT = "Oops! 😞,Unknown Error Occurred"
-
 const base = '/assets/profile'
 export const AVATARIMAGES = [
   `${base}/1.jpg`,

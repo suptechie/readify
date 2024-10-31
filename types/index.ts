@@ -1,12 +1,23 @@
 export interface ErrorResponse {
-    message?: string;
+    message?: ErrorMessage | string;
     code?: StatusCode;
 }
 
 export type TokenPayload = {
-    id:string;
-    image:string;
+    id: string;
+    image: string;
+};
+
+export enum ErrorMessage {
+    INVALID_CREDENTIALS = "Invalid email or password",
+    UNAUTHORIZED = "You are not authorized to perform this action",
+    TOKEN_EXPIRED = "Your session has expired. Please log in again",
+    TOKEN_INVALID = "Invalid authentication token",
+    ERROR_DEFAULT = "Oops! 😞,Unknown Error Occurred",
+    NOT_FOUND = "The requested resource was not found",
+    ALREADY_EXISTS = "This resource already exists",
 }
+
 
 export enum StatusCode {
     Success = 200,

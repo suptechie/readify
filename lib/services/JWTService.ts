@@ -1,5 +1,5 @@
 import { TOKEN_SECRET } from '@/config';
-import { ErrorResponse, StatusCode, TokenPayload } from '@/types';
+import { ErrorMessage, ErrorResponse, StatusCode, TokenPayload } from '@/types';
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
 
 export default class JWTService {
@@ -14,9 +14,9 @@ export default class JWTService {
             return jwt.verify(token, TOKEN_SECRET) as TokenPayload;
         } catch (error) {
             if (error instanceof TokenExpiredError) {
-                return { message: "Token Expired", code: StatusCode.Unauthorized };
+                return { message: ErrorMessage.TOKEN_EXPIRED, code: StatusCode.Unauthorized };
             } else {
-                return { message: "Invalid Token", code: StatusCode.Forbidden };
+                return { message: ErrorMessage.TOKEN_INVALID, code: StatusCode.Forbidden };
             }
         }
     }

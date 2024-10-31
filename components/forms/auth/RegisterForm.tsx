@@ -114,7 +114,7 @@ const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Username *</FormLabel>
                   <FormControl>
-                    <Input placeholder="mr_anonimous" {...field} />
+                    <Input placeholder="mr_anonymous" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
