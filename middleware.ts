@@ -8,10 +8,10 @@ export const middleware = async (request: NextRequest) => {
     const token = (await cookies()).get("token");
     const urlPath = request.nextUrl.pathname;
 
-    if (urlPath === '/profile') {
+    if (urlPath === '/profile'||urlPath==='/api/user') {
         if (!token || !jwt.verifyToken(token.value)) {
             return NextResponse.rewrite(new URL('/404', request.url));
-        }
+        }        
         
         const response = NextResponse.next();
         response.headers.set("Authorization", `Bearer ${token.value}`);
@@ -25,5 +25,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-    matcher: ['/login', '/register', '/profile'],
+    matcher: ['/login', '/register', '/profile','/api/user'],
 };

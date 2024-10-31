@@ -8,13 +8,12 @@ import { IUser } from "@/types/entities";
 import { validateUserData } from "@/actions/helpers/dataValidations";
 import { cookies } from "next/headers";
 import JWTService from "@/lib/services/JWTService";
-import { NODE_ENV } from "@/config";
 
 connectDb();
 
+// Auth --------------------------------------------------------------------
 const bcrypt = new BcryptService();
 const jwt = new JWTService();
-
 
 export const createUser = async (userData: IUser): Promise<ErrorResponse | undefined> => {
     try {
@@ -24,13 +23,14 @@ export const createUser = async (userData: IUser): Promise<ErrorResponse | undef
 
         await User.create({
             ...userData,
-            password
+            password,
+            age: userData.age?.toString()
         });
 
     } catch (error: any) {
         const code = error?.errorResponse?.code;
         if (code === 11000) {
-            return { message: ErrorMessage.ALREADY_EXISTS , code: StatusCode.Conflict };
+            return { message: ErrorMessage.ALREADY_EXISTS, code: StatusCode.Conflict };
         } else {
             console.log(error);
             return { message: error.message ?? ErrorMessage.ERROR_DEFAULT };
@@ -45,7 +45,7 @@ export const validateUser = async (email: string, password: string): Promise<Err
             return { message: ErrorMessage.INVALID_CREDENTIALS };
         }
 
-        const isPasswordValid = await bcrypt.compare(password,user.password!);
+        const isPasswordValid = await bcrypt.compare(password, user.password!);
         if (!isPasswordValid) {
             return { message: ErrorMessage.INVALID_CREDENTIALS };
         }
@@ -59,7 +59,7 @@ export const validateUser = async (email: string, password: string): Promise<Err
 
     } catch (error: any) {
         console.log(error);
-        return { message: error.message ??  ErrorMessage.ERROR_DEFAULT };
+        return { message: error.message ?? ErrorMessage.ERROR_DEFAULT };
     }
 };
 
@@ -73,3 +73,4 @@ export const logout = async (): Promise<void> => {
         maxAge: 0,
     });
 };
+

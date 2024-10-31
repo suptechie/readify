@@ -1,6 +1,6 @@
 'use client';
 
-import { logout } from "@/actions/user.auth";
+import { logout } from "@/actions/user.actions";
 import {
     AlertDialog,
     AlertDialogAction,

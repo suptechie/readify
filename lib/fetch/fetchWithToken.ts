@@ -2,18 +2,24 @@ import { NEXT_PUBLIC_API_URL } from '@/config';
 import { cookies } from 'next/headers';
 
 export const fetchWithToken = async (input: RequestInfo, init?: RequestInit): Promise<Response> => {
-    const token = (await cookies()).get("token")?.value;
-    
-    const headers = {
-        ...init?.headers,
-        Authorization: token ? `Bearer ${token}` : "",
-    };
+    try {
+        const token = (await cookies()).get("token")?.value;
 
-    const url = `${NEXT_PUBLIC_API_URL}${input}`;
+        const headers = {
+            ...init?.headers,
+            Authorization: token ? `Bearer ${token}` : "",
+        };
 
-    return fetch(url, {
-        ...init,
-        headers,
-        credentials: 'include', 
-    });
+        const url = `${NEXT_PUBLIC_API_URL}${input}`;
+
+        return fetch(url, {
+            ...init,
+            headers,
+            credentials: 'include'
+        });
+
+    } catch (error) {
+        console.log('err', error);
+        throw new Error(error as string)
+    }
 };

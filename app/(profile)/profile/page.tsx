@@ -15,12 +15,12 @@ const page = async () => {
 
         if (!response.ok) {
             const errorData = await response.json();
-            return <div>Err or: {errorData.error}</div>;
+            return <div>Error: {errorData.error}</div>;
         }
 
-        const { user } = await response.json();
+        const data = await response.json();        
 
-        if (!user) {
+        if (!data.user) {
             return <div>No user found</div>;
         }
 
@@ -31,7 +31,7 @@ const page = async () => {
                         <CardTitle className="text-2xl font-bold text-center">User Profile</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <UserProfile user={user} />
+                        <UserProfile user={data.user} />
                     </CardContent>
                 </Card>
             </div >
@@ -42,32 +42,3 @@ const page = async () => {
 };
 
 export default page;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// export default async function ProfilePage() {
-
-
-// }
-
-
-
-
-
-
-
-
-
-
-

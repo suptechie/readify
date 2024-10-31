@@ -12,7 +12,7 @@ import { RotateCw } from "lucide-react";
 import { loginFormSchema } from '@/components/forms/auth/form-validation';
 import { z } from 'zod';
 import Link from 'next/link';
-import { validateUser } from '@/actions/user.auth';
+import { validateUser } from '@/actions/user.actions';
 import { toast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 

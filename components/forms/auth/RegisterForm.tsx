@@ -22,7 +22,7 @@ import { Loader2 } from "lucide-react";
 import { AVATARIMAGES, GENDER, GENRES } from '@/constants';
 import { registerFormSchema } from "@/components/forms/auth/form-validation";
 import type { z } from "zod";
-import { createUser } from "@/actions/user.auth";
+import { createUser } from "@/actions/user.actions";
 import { Genres } from "@/types/entities";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";

@@ -20,3 +20,10 @@ export const registerFormSchema = z.object({
     image: z.string({ message: "You should select one avatar" }),
     bio: z.string(),
 });
+
+export const profileSchema = z.object({
+    name: z.string({ message: "Name is required" }).min(3,{message:"Name must the more than 3 letters"}),
+    age: z.string({ message: "Age is required" }),
+    gender: z.string().min(1, { message: "You must select your gender" }),
+    bio: z.string(),
+})
