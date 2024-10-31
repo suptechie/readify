@@ -32,10 +32,10 @@ interface TokenDetails {
     };
 }
 
-export const getTokenDetailsServer = async (req:NextRequest): Promise<TokenDetails> => {
+export const getTokenDetailsServer = async (req: NextRequest): Promise<TokenDetails> => {
     try {
         const jwt = new JWTService();
-        const token = (req.headers.get("Authorization")?.split('Bearer ')[1]);        
+        const token = (req.headers.get("Authorization")?.split('Bearer ')[1]);
 
         if (!token) {
             return {
@@ -63,7 +63,7 @@ export const getTokenDetailsServer = async (req:NextRequest): Promise<TokenDetai
                 }
             };
         }
-        // eslint-disable-next-line
+        // eslint-disable-next-line 
     } catch (error) {
         return {
             success: false,

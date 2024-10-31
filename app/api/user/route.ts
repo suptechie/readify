@@ -1,4 +1,4 @@
-import connectDB from "@/lib/db/connectDB";
+import connectDB from "@/lib/db/connectDBs";
 import User from "@/lib/db/models/User";
 import { getTokenDetailsServer } from "@/lib/utils/getTokenData";
 import { ErrorMessage, StatusCode } from "@/types";
