@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/form";
 import { z } from 'zod';
 import { profileSchema } from '../forms/auth/form-validation';
-import { fetchWithToken } from '@/lib/fetch/fetchWithToken';
 import { toast } from '@/hooks/use-toast';
 import { ErrorMessage } from '@/types';
 
@@ -60,9 +59,10 @@ export default function Component({ user }: { user: IUser; }) {
         variant:"success"
       });
 
-    } catch (error: any) {
-      console.log(error);
-      
+      setIsEditing(false)
+
+      //eslint-disable-next-line
+    } catch (error: any) {      
       toast({
         title: "Error while updating",
         description: error.message || ErrorMessage.ERROR_DEFAULT,

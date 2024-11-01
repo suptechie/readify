@@ -4,7 +4,9 @@ import React from 'react';
 
 const page = async () => {
     try {
-        const response = await fetchWithToken('/api/user');        
+        const response = await fetchWithToken('/api/user',{
+            method:"GET"
+        });        
 
         if (!response.ok) {
             const errorData = await response.json();

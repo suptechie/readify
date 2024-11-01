@@ -33,7 +33,6 @@ export async function GET(req: NextRequest) {
     try {
         await connectDB();
         const tokenResult = await getTokenDetailsServer(req);
-
         if (!tokenResult.success || !tokenResult.data) {
             return NextResponse.json(
                 { error: tokenResult.error?.message ?? ErrorMessage.UNAUTHORIZED },
