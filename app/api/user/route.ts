@@ -6,11 +6,10 @@ import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 
+connectDB();
 
 export const PUT = async (req: NextRequest) => {
     try {
-        await connectDB();
-
         const data = await req.json();
 
         const user = await User.findByIdAndUpdate(data._id, data).select("-password");
@@ -31,7 +30,6 @@ export const PUT = async (req: NextRequest) => {
 
 export async function GET(req: NextRequest) {
     try {
-        await connectDB();
         const tokenResult = await getTokenDetailsServer(req);
         if (!tokenResult.success || !tokenResult.data) {
             return NextResponse.json(
