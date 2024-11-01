@@ -1,57 +1,120 @@
 'use client';
 
-import { useState } from "react";
 import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
 import { Genres, IArticle } from "@/types/entities";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { GENRES } from "@/constants";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { MultiSelect } from "@/components/ui/multi-select";
+
+const formSchema = z.object({
+    title: z.string().min(1, "Title is required"),
+    content: z.string().min(1, "Content is required"),
+    genre: z.string().min(1, "Genre is required"),
+    tags: z.array(z.string()).min(1, "At least one tag is required"),
+});
 
 const AddArticleForm = ({ onAddArticle }: { onAddArticle: (article: IArticle) => void; }) => {
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
-    const [genre, setGenre] = useState<string>(Genres.TECHNOLOGY);
-    const [tags, setTags] = useState("");
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            title: "",
+            content: "",
+            genre:'',
+            tags: [],
+        },
+    });
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const onSubmit = (values: z.infer<typeof formSchema>) => {
         onAddArticle({});
-
+        console.log(values);
+        form.reset();
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-                <Label htmlFor="title">Title</Label>
-                <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-            </div>
-            <div>
-                <Label htmlFor="content">Content</Label>
-                <Textarea id="content" value={content} onChange={(e) => setContent(e.target.value)} required />
-            </div>
-            <div>
-                <Label htmlFor="genre">Genre</Label>
-                <Select value={genre} onValueChange={setGenre} required>
-                    <SelectTrigger id="genre">
-                        <SelectValue placeholder="Select a genre" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="Technology">Technology</SelectItem>
-                        <SelectItem value="Science">Science</SelectItem>
-                        <SelectItem value="Business">Business</SelectItem>
-                    </SelectContent>
-                </Select>
-            </div>
-            <div>
-                <Label htmlFor="tags">Tags (comma-separated)</Label>
-                <Input id="tags" value={tags} onChange={(e) => setTags(e.target.value)} />
-            </div>
-            <Button type="submit">Add Article</Button>
-        </form>
+        <ScrollArea className="max-h-[500px] remove-scrollbar">
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="title"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Title</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="content"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Content</FormLabel>
+                                <FormControl>
+                                    <Textarea {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="genre"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Genre</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a genre" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {GENRES.map(({ label, id }) => (
+                                            <SelectItem key={id} value={id}>
+                                                {label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="tags"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="mr-4">Tags</FormLabel>
+                                <FormControl>
+                                    <MultiSelect
+                                        options={GENRES.map(genre => ({ label: genre.label, value: genre.id }))}
+                                        onValueChange={field.onChange}
+                                        placeholder="Select your favorite genres"
+                                    />
+                                </FormControl>
+                                <FormDescription>Select one or more tags for your article</FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <Button type="submit">Add Article</Button>
+                </form>
+            </Form>
+        </ScrollArea>
     );
 };
-
 
 export default memo(AddArticleForm);
