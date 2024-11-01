@@ -19,11 +19,11 @@ export const PUT = async (req: NextRequest) => {
         return NextResponse.json({ user });
 
     } catch (error) {
-        console.log(error);
-        return NextResponse.json({
-            error: ErrorMessage.ERROR_DEFAULT,
-            status: StatusCode.InternalServerError
-        });
+        const errorMessage = error instanceof Error ? error.message : ErrorMessage.ERROR_DEFAULT;
+        return NextResponse.json(
+            { error: errorMessage },
+            { status: StatusCode.InternalServerError }
+        );
     }
 };
 
