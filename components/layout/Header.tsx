@@ -32,16 +32,12 @@ const Header = async () => {
               />
               <span className="font-bold text-base">Readify</span>
             </Link>
-            <nav className="hidden sm:flex items-center space-x-6">
-              <Link href="/articles" className="text-sm font-medium transition-colors hover:text-primary">
-                Articles
-              </Link>
-              <Link href="/categories" className="text-sm font-medium transition-colors hover:text-primary">
-                Categories
-              </Link>
-              <Link href="/about" className="text-sm font-medium transition-colors hover:text-primary">
-                About
-              </Link>
+            <nav className="flex items-center space-x-6">
+              {userData && (
+                <Link href="/articles" className="text-sm font-medium transition-colors hover:text-primary">
+                  Articles
+                </Link>
+              )}
             </nav>
           </div>
           <div className="flex items-center">
@@ -62,21 +58,6 @@ const Header = async () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem asChild>
-                  <Link href="/articles" className="w-full sm:hidden">
-                    Articles
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/categories" className="w-full sm:hidden">
-                    Categories
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/about" className="w-full sm:hidden">
-                    About
-                  </Link>
-                </DropdownMenuItem>
                 <DropdownMenuSeparator className="sm:hidden" />
                 {userData ? (
                   <>

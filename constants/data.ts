@@ -10,8 +10,8 @@ export const user: IUser = {
   bio: "Passionate software engineer and tech enthusiast.",
   username: "johndoe",
   password: "securepassword",
-  createdAt: new Date("2022-01-01"),
-  updatedAt: new Date("2023-04-15")
+  createdAt:"2022-01-01",
+  updatedAt:"2023-04-15"
 };
 
 export const articles: IArticle[] = [
@@ -22,8 +22,8 @@ export const articles: IArticle[] = [
     author: user._id,
     genre: Genres.TECHNOLOGY,
     tags: ["AI", "machine learning", "technology trends"],
-    createdAt: new Date("2023-03-01"),
-    updatedAt: new Date("2023-03-15"),
+    createdAt:"2023-03-01",
+    updatedAt:"2023-03-15",
     image:"/assets/laptop.jpg"
   },
   {
@@ -33,8 +33,8 @@ export const articles: IArticle[] = [
     author: user._id,
     genre: Genres.SCIENCE,
     tags: ["climate change", "environment", "science"],
-    createdAt: new Date("2023-05-01"),
-    updatedAt: new Date("2023-05-10"),
+    createdAt:"2023-05-01",
+    updatedAt:"2023-05-10",
     image:"/assets/laptop.jpg"
   },
   {
@@ -44,8 +44,8 @@ export const articles: IArticle[] = [
     author: user._id,
     genre: Genres.BUSINESS,
     tags: ["startup", "entrepreneurship", "finance"],
-    createdAt: new Date("2023-07-01"),
-    updatedAt: new Date("2023-07-20"),
+    createdAt:"2023-07-01",
+    updatedAt:"2023-07-20",
     image:"/assets/laptop.jpg"
   }
 ];
@@ -56,16 +56,16 @@ export const likes: IArticleInteraction[] = [
     article: articles[0]._id,
     user: user._id,
     type: "like",
-    createdAt: new Date("2023-03-05"),
-    updatedAt: new Date("2023-03-05")
+    createdAt:"2023-03-05",
+    updatedAt:"2023-03-05"
   },
   {
     _id: "like-2",
     article: articles[1]._id,
     user: user._id,
     type: "like",
-    createdAt: new Date("2023-05-05"),
-    updatedAt: new Date("2023-05-05")
+    createdAt:"2023-05-05",
+    updatedAt:"2023-05-05"
   }
 ];
 
@@ -75,8 +75,8 @@ export const dislikes: IArticleInteraction[] = [
     article: articles[2]._id,
     user: user._id,
     type: "dislike",
-    createdAt: new Date("2023-07-10"),
-    updatedAt: new Date("2023-07-10")
+    createdAt:"2023-07-10",
+    updatedAt:"2023-07-10"
   }
 ];
 
@@ -85,7 +85,7 @@ export const blockedArticles: IBlockedArticle[] = [
     _id: "block-1",
     article: articles[2]._id,
     user: user._id,
-    createdAt: new Date("2023-07-15"),
-    updatedAt: new Date("2023-07-15")
+    createdAt:"2023-07-15",
+    updatedAt:"2023-07-15"
   }
 ];

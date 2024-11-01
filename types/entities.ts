@@ -1,4 +1,4 @@
-import { MongoClient, Db } from 'mongodb'
+import { MongoClient, Db } from 'mongodb';
 
 export enum Genres {
     TECHNOLOGY = "technology",
@@ -25,7 +25,7 @@ export enum Genres {
 
 export interface IUser {
     _id?: string;
-    name?:string;
+    name?: string;
     email?: string;
     age?: string;
     image?: string;
@@ -34,8 +34,8 @@ export interface IUser {
     bio?: string;
     username?: string;
     password?: string;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export interface IArticle {
@@ -43,11 +43,12 @@ export interface IArticle {
     title?: string;
     content?: string;
     author?: IUser["_id"];
-    genre: Genres;
+    genre?: Genres;
     image?: string;
     tags?: string[];
-    createdAt?: Date;
-    updatedAt?: Date;
+    likes?:number;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export interface IArticleInteraction {
@@ -55,20 +56,20 @@ export interface IArticleInteraction {
     article: IArticle["_id"];
     user: IUser["_id"];
     type: "like" | "dislike";
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface IBlockedArticle {
     _id?: string;
     article: IArticle["_id"];
     user: IUser["_id"];
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
 }
 
 declare global {
-    var _mongoClientPromise: Promise<MongoClient>
+    var _mongoClientPromise: Promise<MongoClient>;
 }
 
 export interface Collections {
@@ -81,4 +82,4 @@ export interface Collections {
 export type MongoConnection = {
     client: MongoClient;
     db: Db;
-}
+};
