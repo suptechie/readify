@@ -8,11 +8,11 @@ const articleSchema = new Schema<IArticle>({
     image: { type: String, required: true },
     genre: { type: String, required: true, index: true },
     likes: { type: Number, default: 0 },
-    tags: { type: [Number], },
+    tags: { type: [String], },
 }, {
     minimize: false, versionKey: false, timestamps: true
 });
 
-const Article = (models.User as Model<IUser>) || model<IUser>("Article", articleSchema);
+const Article = (models.Article as Model<IUser>) || model<IUser>("Article", articleSchema);
 
 export default Article;

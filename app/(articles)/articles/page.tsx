@@ -4,7 +4,6 @@ import { useState } from "react";
 import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { IArticle } from "@/types/entities";
 import { articles } from "@/constants/data";
 import ArticleCard from "@/components/common/ArticleCard";
 import AddArticleForm from "@/components/forms/auth/AddArticleForm";
@@ -13,10 +12,6 @@ function ArticlePage() {
   const [articleList, setArticleList] = useState(articles);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleAddArticle = (newArticle: IArticle) => {
-    setArticleList([newArticle, ...articleList]);
-    setIsDialogOpen(false);
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -30,7 +25,7 @@ function ArticlePage() {
             <DialogHeader>
               <DialogTitle>Add New Article</DialogTitle>
             </DialogHeader>
-            <AddArticleForm onAddArticle={handleAddArticle} />
+            <AddArticleForm />
           </DialogContent>
         </Dialog>
       </div>

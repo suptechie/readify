@@ -17,13 +17,14 @@ export const POST = async (req: NextRequest) => {
             );
         };
 
-        const data = req.body;
-
-        const article = await Article.create(data);
+        const data = await req.json();
+        const article = await Article.create({ ...data, author: tokenResult.data.id });
 
         return NextResponse.json({ article });
 
     } catch (error) {
+        console.log(error);
+        
         const errorMessage = error instanceof Error ? error.message : ErrorMessage.ERROR_DEFAULT;
         return NextResponse.json(
             { error: errorMessage },

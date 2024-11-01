@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Genres, IArticle } from "@/types/entities";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GENRES } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +12,8 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { MultiSelect } from "@/components/ui/multi-select";
+import { toast } from "@/hooks/use-toast";
+import { NEXT_PUBLIC_API_URL } from "@/config";
 
 const formSchema = z.object({
     title: z.string().min(1, "Title is required"),
@@ -21,21 +22,46 @@ const formSchema = z.object({
     tags: z.array(z.string()).min(1, "At least one tag is required"),
 });
 
-const AddArticleForm = ({ onAddArticle }: { onAddArticle: (article: IArticle) => void; }) => {
+const AddArticleForm = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             title: "",
             content: "",
-            genre:'',
+            genre: '',
             tags: [],
         },
     });
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        onAddArticle({});
-        console.log(values);
-        form.reset();
+    // TODO: Image uploading
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        try {
+            const response =  await fetch(`${NEXT_PUBLIC_API_URL}/api/article`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(values)
+            });
+
+            if(!response.ok){
+                console.log(response);
+                
+                throw new Error("Failed")
+            }
+            toast({
+                title: "Article Created Successful",
+                description: "You can edit and manege the articles from articles tab",
+                variant: "success"
+            });
+            //eslint-disable-next-line
+        } catch (error: any) {
+            toast({
+                title: "Article creation failed",
+                description: error.message || "Unknown error Occurred",
+                variant: "destructive"
+            });
+        }
     };
 
     return (

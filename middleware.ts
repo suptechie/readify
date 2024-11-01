@@ -8,18 +8,18 @@ export const middleware = async (request: NextRequest) => {
     const token = request.cookies.get("token");
     const urlPath = request.nextUrl.pathname;
 
-    if (urlPath === '/profile' || urlPath === '/api/user') {
-        const isAuthorized = !token || !jwt.verifyToken(token.value);
-        
-        if (isAuthorized) {
-            if(urlPath==='/api/user'){
-                return NextResponse.next()
+    if (urlPath === '/profile' || urlPath === '/api/user' || urlPath === '/api/article') {
+        const isUnAuthorized = !token || !jwt.verifyToken(token.value);
+
+        if (isUnAuthorized) {
+            if (urlPath === '/api/user' || urlPath === "/api/article") {
+                return NextResponse.next();
             }
             return NextResponse.rewrite(new URL('/404', request.url));
         }
-            
-            const response = NextResponse.next();
-            response.headers.set("Authorization", `Bearer ${token.value}`);
+
+        const response = NextResponse.next();
+        response.headers.set("Authorization", `Bearer ${token.value}`);
         return response;
     } else {
         if (token && jwt.verifyToken(token.value)) {
@@ -30,5 +30,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-    matcher: ['/login', '/register', '/profile', '/api/user'],
+    matcher: ['/login', '/register', '/profile', '/api/user', "/api/article"],
 };
