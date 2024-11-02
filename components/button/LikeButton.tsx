@@ -43,7 +43,7 @@ const LikeButton = ({ likesCount: initialLikesCount, userIds, id }: Props) => {
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Failed to update like');
             }
-
+        //eslint-disable-next-line
         } catch (error: any) {
             toast({
                 title: "Error updating like",
