@@ -15,7 +15,7 @@ const connectDB = async (): Promise<void> => {
             return;
         }
 
-        await connect(MONGO_URI, {
+        connect(MONGO_URI, {
             maxPoolSize: 10,
             serverSelectionTimeoutMS: 5000,
             socketTimeoutMS: 45000,

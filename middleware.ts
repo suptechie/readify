@@ -7,7 +7,7 @@ export const middleware = async (request: NextRequest) => {
     const token = request.cookies.get("token");
     const urlPath = request.nextUrl.pathname;
 
-    if (urlPath === '/profile' || urlPath === '/api/user' || urlPath === '/api/article'||urlPath==='/api/cloudinary') {
+    if (urlPath === '/profile' || urlPath === '/api/user' || urlPath === '/api/article' || urlPath === '/api/cloudinary') {
         const isUnAuthorized = !token || !jwt.verifyToken(token.value);
 
         if (isUnAuthorized) {
@@ -29,5 +29,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-    matcher: ['/login', '/register', '/profile', '/api/user', '/api/article','/api/cloudinary'],
+    matcher: ['/login', '/register', '/profile', '/api/user', '/api/article', '/api/cloudinary'],
 };

@@ -21,17 +21,17 @@ export const fetchWithToken = async (input: RequestInfo, init?: RequestInit): Pr
 
     } catch (error) {
         console.log('err', error);
-        throw new Error(error as string)
+        throw new Error(error as string);
     }
 };
 
 
-export const fetchArticles =async ()=> {
-    const response = await fetchWithToken('/api/article');
+export const fetchArticles = async (url: string = '/api/article') => {
+    const response = await fetchWithToken(url);
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to fetch articles');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to fetch articles');
     }
     const data = await response.json();
     return data.articles as IExtendedArticle[];
-  }
+};

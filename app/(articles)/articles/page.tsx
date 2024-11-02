@@ -35,7 +35,7 @@ const ArticlePage = async () => {
         </Alert>
       ) : (
         <Suspense fallback={<Loader />}>
-          <ArticleList articles={articles} token={token.id} />
+          <ArticleList articles={articles} token={token?.id} />
         </Suspense>
       )}
     </div>
