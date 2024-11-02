@@ -28,15 +28,27 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
 
       - name: Run Linter
         run: npm run lint
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
 
       - name: Run Tests
         run: npm test
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
 
       - name: Build project
         run: npm run build
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
 
       - name: Upload production build artifacts
         uses: actions/upload-artifact@v3
