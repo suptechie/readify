@@ -1,18 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ImageIcon, X } from 'lucide-react';
 import Image from 'next/image';
 import { toast } from '@/hooks/use-toast';
+import { ImageUploadProps } from '@/types/props';
 
-interface ImageUploadProps {
-    onChange: (value: string) => void;
-    value: string;
-    folder: string;
-}
-
-export function ImageUpload({ onChange, value, folder = 'default' }: ImageUploadProps) {
+export const ImageUpload = ({ onChange, value, folder = 'default' }: ImageUploadProps) => {
     const [imageUrl, setImageUrl] = useState<string>(value);
     const [isUploading, setIsUploading] = useState(false);
 
@@ -26,7 +21,7 @@ export function ImageUpload({ onChange, value, folder = 'default' }: ImageUpload
                 body: JSON.stringify({ folder }),
             });
 
-            
+
 
             if (!response.ok) throw new Error('Failed to get upload credentials');
 
@@ -48,7 +43,7 @@ export function ImageUpload({ onChange, value, folder = 'default' }: ImageUpload
             );
 
             console.log(uploadResponse);
-            
+
             if (!uploadResponse.ok) throw new Error('Upload failed');
 
             const uploadResult = await uploadResponse.json();
@@ -56,10 +51,6 @@ export function ImageUpload({ onChange, value, folder = 'default' }: ImageUpload
 
             setImageUrl(url);
             onChange(url);
-            toast({
-                title: "Image uploaded successfully",
-                duration: 3000
-            });
         } catch (error) {
             console.error('Upload error:', error);
             toast({
@@ -76,10 +67,6 @@ export function ImageUpload({ onChange, value, folder = 'default' }: ImageUpload
     const handleRemove = () => {
         setImageUrl('');
         onChange('');
-        toast({
-            title: "Image removed",
-            duration: 3000
-        });
     };
 
     return (
@@ -127,4 +114,7 @@ export function ImageUpload({ onChange, value, folder = 'default' }: ImageUpload
             )}
         </div>
     );
-}
+};
+
+
+export default memo(ImageUpload);

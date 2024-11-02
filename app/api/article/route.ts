@@ -22,9 +22,7 @@ export const POST = async (req: NextRequest) => {
 
         return NextResponse.json({ article });
 
-    } catch (error) {
-        console.log(error);
-        
+    } catch (error) {        
         const errorMessage = error instanceof Error ? error.message : ErrorMessage.ERROR_DEFAULT;
         return NextResponse.json(
             { error: errorMessage },

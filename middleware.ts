@@ -8,11 +8,11 @@ export const middleware = async (request: NextRequest) => {
     const token = request.cookies.get("token");
     const urlPath = request.nextUrl.pathname;
 
-    if (urlPath === '/profile' || urlPath === '/api/user' || urlPath === '/api/article') {
+    if (urlPath === '/profile' || urlPath === '/api/user' || urlPath === '/api/article'||urlPath==='/api/cloudinary') {
         const isUnAuthorized = !token || !jwt.verifyToken(token.value);
 
         if (isUnAuthorized) {
-            if (urlPath === '/api/user' || urlPath === "/api/article") {
+            if (urlPath.includes("/api")) {
                 return NextResponse.next();
             }
             return NextResponse.rewrite(new URL('/404', request.url));
@@ -30,5 +30,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-    matcher: ['/login', '/register', '/profile', '/api/user', "/api/article"],
+    matcher: ['/login', '/register', '/profile', '/api/user', '/api/article','/api/cloudinary'],
 };

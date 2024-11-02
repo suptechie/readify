@@ -14,21 +14,14 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { MultiSelect } from "@/components/ui/multi-select";
 import { toast } from "@/hooks/use-toast";
 import { NEXT_PUBLIC_API_URL } from "@/config";
-import { ImageUpload } from "./image-upload";
+import { ImageUpload } from "@/components/common/ImageUpload";
 import { useRouter } from "next/navigation";
-
-const formSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  content: z.string().min(1, "Content is required"),
-  genre: z.string().min(1, "Genre is required"),
-  tags: z.array(z.string()).min(1, "At least one tag is required"),
-  image: z.string({ message: "Image is required" }),
-});
+import { addArticleFormSchema } from "./form-validation";
 
 const AddArticleForm = () => {
   const router = useRouter()
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof addArticleFormSchema>>({
+    resolver: zodResolver(addArticleFormSchema),
     defaultValues: {
       title: "",
       content: "",
@@ -38,7 +31,7 @@ const AddArticleForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof addArticleFormSchema>) => {
     try {
       if (values.image.trim() === '') {
         form.setError("image", { message: "Image is required" });
