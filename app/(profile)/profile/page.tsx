@@ -1,17 +1,25 @@
 import ProfileSkeleton from "@/components/skeleton/ProfileSkeleton";
-import dynamic from "next/dynamic";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { fetchWithToken } from "@/lib/fetch/fetchWithToken";
+import impDynamic from "next/dynamic";  
+import { headers } from "next/headers";
 
-
-const UserProfile = dynamic(() => import('@/components/common/UserProfile'), {
+const UserProfile = impDynamic(() => import('@/components/common/UserProfile'), {
     loading: () => <ProfileSkeleton />
 });
 
+export const dynamic = 'force-dynamic';
 
-const page = async () => {
+const Page = async () => {
     try {
-        const response = await fetchWithToken(`/api/user`);
+        const headersList = await headers();
+        const token = headersList.get('authorization')?.replace('Bearer ', '');
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
+            headers: {
+                Authorization: token ? `Bearer ${token}` : "",
+            },
+            cache: 'no-store'
+        });
 
         if (!response.ok) {
             const errorData = await response.json();
@@ -26,7 +34,7 @@ const page = async () => {
 
         return (
             <div className="container mx-auto py-10">
-                <Card className="w-full max-w-2xl mx-auto p">
+                <Card className="w-full max-w-2xl mx-auto">
                     <CardHeader>
                         <CardTitle className="text-2xl font-bold text-center">User Profile</CardTitle>
                     </CardHeader>
@@ -34,11 +42,11 @@ const page = async () => {
                         <UserProfile user={data.user} />
                     </CardContent>
                 </Card>
-            </div >
+            </div>
         );
     } catch (error) {
         return <div>Error: {error instanceof Error ? error.message : 'Something went wrong'}</div>;
     }
 };
 
-export default page;
+export default Page;
