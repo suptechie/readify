@@ -20,9 +20,34 @@ export const POST = async (req: NextRequest) => {
         const data = await req.json();
         const article = await Article.create({ ...data, author: tokenResult.data.id });
 
-        return NextResponse.json({ article });
+        return NextResponse.json(article);
 
-    } catch (error) {        
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : ErrorMessage.ERROR_DEFAULT;
+        return NextResponse.json(
+            { error: errorMessage },
+            { status: StatusCode.InternalServerError }
+        );
+    }
+};
+
+
+export const GET = async (req: NextRequest) => {
+    try {
+        const tokenResult = await getTokenDetailsServer(req);
+        if (!tokenResult.success || !tokenResult.data) {
+            return NextResponse.json(
+                { error: tokenResult.error?.message ?? ErrorMessage.UNAUTHORIZED },
+                { status: tokenResult.error?.code ?? StatusCode.Unauthorized }
+            );
+        }
+
+        const articles = await Article.find({ author: tokenResult.data.id });
+
+        return NextResponse.json({ articles });
+
+    } catch (error) {
+        console.log(error);
         const errorMessage = error instanceof Error ? error.message : ErrorMessage.ERROR_DEFAULT;
         return NextResponse.json(
             { error: errorMessage },

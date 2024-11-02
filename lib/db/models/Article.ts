@@ -1,4 +1,4 @@
-import { IArticle, IUser } from "@/types/entities";
+import { IArticle } from "@/types/entities";
 import { Model, model, models, Schema, Types } from "mongoose";
 
 const articleSchema = new Schema<IArticle>({
@@ -13,6 +13,6 @@ const articleSchema = new Schema<IArticle>({
     minimize: false, versionKey: false, timestamps: true
 });
 
-const Article = (models.Article as Model<IUser>) || model<IUser>("Article", articleSchema);
+const Article = (models.Article as Model<IArticle>) || model<IArticle>("Article", articleSchema);
 
 export default Article;
