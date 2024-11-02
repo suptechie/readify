@@ -1,10 +1,23 @@
+'use client'
 import ArticleCard from "@/components/common/ArticleCard";
-import { IArticle } from "@/types/entities";
+import { IExtendedArticle } from "@/types/entities";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { memo } from "react";
+import { memo, useEffect } from "react";
+
+type Props = {
+    articles: IExtendedArticle[];
+    token?:string;
+}
 
 
-const ArticleList = ({ articles }: { articles: IArticle[]; }) => {
+const ArticleList = ({ articles, token }: Props) => {
+
+    useEffect(()=>{
+        if(token){
+            localStorage.setItem("token",token);
+        }
+    },[token])
+
     if (articles.length === 0) {
         return (
             <Alert>

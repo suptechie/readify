@@ -4,7 +4,6 @@ import { RootLayoutProps } from "@/types/props";
 import { ThemeProvider } from "@/components/provider/ThemeProvider";
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import "../styles/globals.css";
-// import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";

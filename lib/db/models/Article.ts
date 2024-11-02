@@ -7,7 +7,6 @@ const articleSchema = new Schema<IArticle>({
     content: { type: String, required: true },
     image: { type: String, required: true },
     genre: { type: String, required: true, index: true },
-    likes: { type: Number, default: 0 },
     tags: { type: [String], },
 }, {
     minimize: false, versionKey: false, timestamps: true

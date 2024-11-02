@@ -1,5 +1,3 @@
-import { MongoClient, Db } from 'mongodb';
-
 export enum Genres {
     TECHNOLOGY = "technology",
     SCIENCE = "science",
@@ -46,40 +44,17 @@ export interface IArticle {
     genre?: Genres;
     image?: string;
     tags?: string[];
-    likes?:number;
     createdAt?: string;
     updatedAt?: string;
 }
 
-export interface IArticleInteraction {
-    _id?: string;
-    article: IArticle["_id"];
-    user: IUser["_id"];
-    type: "like" | "dislike";
-    createdAt: string;
-    updatedAt: string;
+export interface ILike {
+    _id?:string
+    article?:IArticle['_id'],
+    user?:IUser['_id']
 }
 
-export interface IBlockedArticle {
-    _id?: string;
-    article: IArticle["_id"];
-    user: IUser["_id"];
-    createdAt: string;
-    updatedAt: string;
-}
-
-declare global {
-    var _mongoClientPromise: Promise<MongoClient>;
-}
-
-export interface Collections {
-    users: IUser;
-    articles: IArticle;
-    articleInteractions: IArticleInteraction;
-    blockedArticles: IBlockedArticle;
-}
-
-export type MongoConnection = {
-    client: MongoClient;
-    db: Db;
+export interface IExtendedArticle extends IArticle {
+    likeCount:number;
+    userIds:string[];
 };

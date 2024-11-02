@@ -1,5 +1,5 @@
 import { NEXT_PUBLIC_API_URL } from '@/config';
-import { IArticle } from '@/types/entities';
+import { IExtendedArticle } from '@/types/entities';
 import { cookies } from 'next/headers';
 
 export const fetchWithToken = async (input: RequestInfo, init?: RequestInit): Promise<Response> => {
@@ -33,5 +33,5 @@ export const fetchArticles =async ()=> {
       throw new Error(errorData.error || 'Failed to fetch articles');
     }
     const data = await response.json();
-    return data.articles as IArticle[];
+    return data.articles as IExtendedArticle[];
   }

@@ -1,29 +1,22 @@
 'use client'
 
-import { memo, useState } from "react"
+import { memo } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
 import Image from "next/image"
-import { Heart, Share2, MoreVertical, Flag, Bookmark, Copy } from "lucide-react"
+import { Share2, MoreVertical, Flag, Bookmark, Copy } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
-import { IArticle } from "@/types/entities";
+import { IExtendedArticle } from "@/types/entities";
+import LikeButton from "../button/LikeButton";
 
 const MAX_TAGS_SHOWN = 1
 
-export default memo(function ArticleCard({ article }: { article: IArticle }) {
-  const [isLiked, setIsLiked] = useState(false)
-  const [likeCount, setLikeCount] = useState(0)
-
-  const handleLike = () => {
-    setIsLiked(!isLiked)
-    setLikeCount(prev => isLiked ? prev - 1 : prev + 1)
-  }
-
+const ArticleCard = ({ article }: { article: IExtendedArticle })=> {
   const handleShare = () => {
-    navigator.clipboard.writeText(`https://yourblog.com/articles/${article._id}`)
+    navigator.clipboard.writeText(`/articles/${article._id}`)
     toast({
       title: "Link copied!",
       description: "The article link has been copied to your clipboard.",
@@ -85,16 +78,7 @@ export default memo(function ArticleCard({ article }: { article: IArticle }) {
       </CardContent>
       <CardFooter className="flex justify-between items-center p-4 border-t">
         <div className="flex items-center space-x-2">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={handleLike} 
-            aria-label={isLiked ? "Unlike" : "Like"}
-            className="hover:bg-primary/10"
-          >
-            <Heart className={`h-5 w-5 ${isLiked ? "fill-red-500 text-red-500" : "text-muted-foreground"}`} />
-            <span className="ml-1 font-medium">{likeCount}</span>
-          </Button>
+          <LikeButton likesCount={article.likeCount} id={article._id!} userIds={article.userIds} />
           <Button 
             variant="ghost" 
             size="sm" 
@@ -134,4 +118,6 @@ export default memo(function ArticleCard({ article }: { article: IArticle }) {
       </CardFooter>
     </Card>
   )
-})
+}
+
+export default memo(ArticleCard);
