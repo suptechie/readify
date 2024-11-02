@@ -1,12 +1,13 @@
+import { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_CLOUD_NAME } from '@/config';
 import { getTokenDetailsServer } from '@/lib/utils/getTokenData';
 import { ErrorMessage, StatusCode } from '@/types';
 import { v2 as cloudinary } from 'cloudinary';
 import { NextRequest, NextResponse } from 'next/server';
 
 cloudinary.config({
-  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: CLOUDINARY_CLOUD_NAME,
+  api_key: CLOUDINARY_API_KEY,
+  api_secret: CLOUDINARY_API_SECRET,
   secure: true,
 });
 
@@ -21,7 +22,7 @@ export const POST = async (request: NextRequest) => {
       );
     };
 
-    const { folder  } = await request.json();
+    const { folder } = await request.json();
 
     const timestamp = Math.round(new Date().getTime() / 1000);
 
@@ -30,14 +31,14 @@ export const POST = async (request: NextRequest) => {
         timestamp,
         folder,
       },
-      process.env.CLOUDINARY_API_SECRET!
+      CLOUDINARY_API_SECRET!
     );
 
     return NextResponse.json({
       signature,
       timestamp,
-      cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-      apiKey: process.env.CLOUDINARY_API_KEY,
+      cloudName: CLOUDINARY_CLOUD_NAME,
+      apiKey: CLOUDINARY_API_KEY,
       folder,
     });
 
