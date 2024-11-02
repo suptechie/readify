@@ -8,11 +8,11 @@ import { Separator } from "@/components/ui/separator"
 import { Heart, Share2 } from "lucide-react"
 import Image from "next/image"
 import { toast } from '@/hooks/use-toast';
-import { IArticle } from '@/types/entities';
+import { IExtendedArticle } from '@/types/entities';
 
 
-export default function ArticleDetail({ article }: { article: IArticle }) {
-  const [likes, setLikes] = useState(article.likes!)
+export default function ArticleDetail({ article }: { article: IExtendedArticle }) {
+  const [likes, setLikes] = useState(article.likeCount!)
   const [isLiked, setIsLiked] = useState(false)
 
   const handleLike = () => {

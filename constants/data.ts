@@ -1,4 +1,4 @@
-import { Genres, IArticle, IArticleInteraction, IBlockedArticle, IUser } from "@/types/entities";
+import { Genres, IExtendedArticle, IUser } from "@/types/entities";
 
 export const user: IUser = {
   _id: "user-1",
@@ -14,7 +14,7 @@ export const user: IUser = {
   updatedAt:"2023-04-15"
 };
 
-export const articles: IArticle[] = [
+export const articles: IExtendedArticle[] = [
   {
     _id: "article-1",
     title: "The Future of Artificial Intelligence",
@@ -24,7 +24,9 @@ export const articles: IArticle[] = [
     tags: ["AI", "machine learning", "technology trends"],
     createdAt:"2023-03-01",
     updatedAt:"2023-03-15",
-    image:"/assets/laptop.jpg"
+    image:"/assets/laptop.jpg",
+    likeCount:1,
+    userIds:[]
   },
   {
     _id: "article-2",
@@ -35,7 +37,9 @@ export const articles: IArticle[] = [
     tags: ["climate change", "environment", "science"],
     createdAt:"2023-05-01",
     updatedAt:"2023-05-10",
-    image:"/assets/laptop.jpg"
+    image:"/assets/laptop.jpg",
+    likeCount:1,
+    userIds:[]
   },
   {
     _id: "article-3",
@@ -46,46 +50,8 @@ export const articles: IArticle[] = [
     tags: ["startup", "entrepreneurship", "finance"],
     createdAt:"2023-07-01",
     updatedAt:"2023-07-20",
-    image:"/assets/laptop.jpg"
-  }
-];
-
-export const likes: IArticleInteraction[] = [
-  {
-    _id: "like-1",
-    article: articles[0]._id,
-    user: user._id,
-    type: "like",
-    createdAt:"2023-03-05",
-    updatedAt:"2023-03-05"
-  },
-  {
-    _id: "like-2",
-    article: articles[1]._id,
-    user: user._id,
-    type: "like",
-    createdAt:"2023-05-05",
-    updatedAt:"2023-05-05"
-  }
-];
-
-export const dislikes: IArticleInteraction[] = [
-  {
-    _id: "dislike-1",
-    article: articles[2]._id,
-    user: user._id,
-    type: "dislike",
-    createdAt:"2023-07-10",
-    updatedAt:"2023-07-10"
-  }
-];
-
-export const blockedArticles: IBlockedArticle[] = [
-  {
-    _id: "block-1",
-    article: articles[2]._id,
-    user: user._id,
-    createdAt:"2023-07-15",
-    updatedAt:"2023-07-15"
+    image:"/assets/laptop.jpg",
+    likeCount:1,
+    userIds:[]
   }
 ];
