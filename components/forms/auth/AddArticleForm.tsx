@@ -62,6 +62,7 @@ const AddArticleForm = () => {
         description: "You can edit and manage the articles from the articles tab",
         variant: "success"
       });
+      //eslint-disable-next-line
     } catch (error: any) {
       toast({
         title: "Article creation failed",

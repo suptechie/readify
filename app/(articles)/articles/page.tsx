@@ -9,7 +9,6 @@ import ArticleCard from "@/components/common/ArticleCard";
 import AddArticleForm from "@/components/forms/auth/AddArticleForm";
 
 function ArticlePage() {
-  const [articleList, setArticleList] = useState(articles);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 
@@ -30,7 +29,7 @@ function ArticlePage() {
         </Dialog>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {articleList.map((article) => (
+        {articles.map((article) => (
           <ArticleCard key={article._id} article={article} />
         ))}
       </div>
