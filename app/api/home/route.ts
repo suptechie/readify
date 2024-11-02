@@ -1,7 +1,10 @@
+import connectDB from "@/lib/db/connectDB";
 import Article from "@/lib/db/models/Article";
 import { ErrorMessage, StatusCode } from "@/types";
 import { IExtendedArticle } from "@/types/entities";
 import { NextResponse } from "next/server";
+
+connectDB();
 
 export const GET = async ()=>{
     try {
