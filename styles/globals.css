@@ -8,11 +8,6 @@
     height: 0px;
     border-radius: 0px;
   }
-  .remove-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
   .remove-scrollbar::-webkit-scrollbar-track {
     background: transparent;
   }
