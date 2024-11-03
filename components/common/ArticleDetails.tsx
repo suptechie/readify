@@ -1,37 +1,44 @@
-'use client'
+'use client';
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { Share2, Calendar, Clock } from "lucide-react"
-import Image from "next/image"
-import { toast } from '@/hooks/use-toast'
-import { IExtendedArticle } from '@/types/entities'
-import LikeButton from '../button/LikeButton'
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Share2, Calendar } from "lucide-react";
+import Image from "next/image";
+import { toast } from '@/hooks/use-toast';
+import { IExtendedArticle } from '@/types/entities';
+import LikeButton from '../button/LikeButton';
 import { memo } from "react";
+import DateFormatter from "./DateFormatter";
 
-const ArticleDetail =({ article }: { article: IExtendedArticle })=> {
+const ArticleDetail = ({ article }: { article: IExtendedArticle; }) => {
   const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href)
+    navigator.clipboard.writeText(window.location.href);
     toast({
       title: "Link copied!",
       description: "The article link has been copied to your clipboard.",
-    })
-  }
+    });
+  };
 
   return (
     <article className="container mx-auto px-4 py-8 max-w-4xl">
       <header className="mb-8">
         <h1 className="text-4xl font-bold mb-4 text-foreground">{article.title}</h1>
-        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
-          <Badge variant="secondary" className="px-2 py-1">{article.genre}</Badge>
-          <div className="flex items-center">
-            <Calendar className="w-4 h-4 mr-1" />
-            <time dateTime={article.createdAt?.toString()}>{new Date(article.createdAt!).toLocaleDateString()}</time>
-          </div>
-          <div className="flex items-center">
-            <Clock className="w-4 h-4 mr-1" />
-            <span>{new Date(article.createdAt!).toLocaleTimeString()}</span>
+        <div className="flex items-center gap-4 mb-4">
+          <Avatar className="w-10 h-10">
+            <AvatarImage src={article.authorImage} alt={article.authorUsername} />
+            <AvatarFallback>{article.authorUsername?.charAt(0).toUpperCase()}</AvatarFallback>
+          </Avatar>
+          <div> 
+            <p className="font-semibold text-foreground">{article.authorUsername}</p>
+            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+              <Badge variant="secondary"  className="px-1 py-1">{article.genre}</Badge>
+              <div className="flex items-center">
+                <Calendar className="w-4 h-4 mr-1" />
+                <DateFormatter dateString={article.createdAt!.toString()} />
+              </div>
+            </div>
           </div>
         </div>
         <div className="flex flex-wrap gap-2 mb-4">
@@ -44,11 +51,11 @@ const ArticleDetail =({ article }: { article: IExtendedArticle })=> {
       </header>
 
       <div className="relative aspect-video w-full mb-8 rounded-lg overflow-hidden shadow-lg">
-        <Image 
-          src={article.image!} 
-          alt={article.title!} 
-          layout="fill" 
-          objectFit="cover" 
+        <Image
+          src={article.image!}
+          alt={article.title!}
+          layout="fill"
+          objectFit="cover"
           priority
           className="transition-transform duration-300 hover:scale-105"
         />
@@ -57,9 +64,9 @@ const ArticleDetail =({ article }: { article: IExtendedArticle })=> {
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center space-x-4">
           <LikeButton id={article._id!} likesCount={article.likeCount} userIds={article.userIds} />
-          <Button 
-            variant="outline" 
-            size="sm" 
+          <Button
+            variant="outline"
+            size="sm"
             onClick={handleShare}
             className="flex items-center space-x-2"
           >
@@ -82,10 +89,10 @@ const ArticleDetail =({ article }: { article: IExtendedArticle })=> {
       <Separator className="my-8" />
 
       <footer className="text-sm text-muted-foreground">
-        <p>Last updated on {new Date(article.updatedAt!).toLocaleString()}</p>
+        <p>Last updated on <DateFormatter dateString={article.updatedAt!.toString()} /></p>
       </footer>
     </article>
-  )
-}
+  );
+};
 
-export default memo(ArticleDetail)
+export default memo(ArticleDetail);

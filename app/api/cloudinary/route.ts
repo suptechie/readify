@@ -1,4 +1,5 @@
 import { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_CLOUD_NAME } from '@/config';
+import catchError from '@/lib/utils/catchError';
 import { getTokenDetailsServer } from '@/lib/utils/getTokenData';
 import { ErrorMessage, StatusCode } from '@/types';
 import { v2 as cloudinary } from 'cloudinary';
@@ -43,7 +44,6 @@ export const POST = async (request: NextRequest) => {
     });
 
   } catch (error) {
-    console.error('[CLOUDINARY_UPLOAD_ERROR]', error);
-    return new NextResponse("Internal Error", { status: 500 });
+    catchError(error);
   }
 };

@@ -35,7 +35,7 @@ const Header = async () => {
             <nav className="flex items-center space-x-6">
               {userData && (
                 <Link href="/articles" className="text-sm font-medium transition-colors hover:text-primary">
-                  Articles
+                  My Articles
                 </Link>
               )}
             </nav>

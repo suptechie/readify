@@ -44,17 +44,19 @@ export interface IArticle {
     genre?: Genres;
     image?: string;
     tags?: string[];
-    createdAt?: string|Date;
-    updatedAt?: string|Date;
-}
-
-export interface ILike {
-    _id?:string
-    article?:IArticle['_id'],
-    user?:IUser['_id']
+    createdAt?: string | Date;
+    updatedAt?: string | Date;
 }
 
 export interface IExtendedArticle extends IArticle {
-    likeCount:number;
-    userIds:string[];
+    likeCount: number;
+    userIds: string[];
+    authorUsername?: string;
+    authorImage?: string;
 };
+
+export interface ILike {
+    _id?: string;
+    article?: IArticle['_id'],
+    user?: IUser['_id'];
+}

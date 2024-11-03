@@ -6,6 +6,7 @@ import { IExtendedArticle } from "@/types/entities";
 import { NextRequest, NextResponse } from "next/server";
 import { ObjectId } from 'mongodb';
 import Like from "@/lib/db/models/Like";
+import catchError from "@/lib/utils/catchError";
 
 connectDB();
 
@@ -26,11 +27,7 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.json(article);
 
     } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : ErrorMessage.ERROR_DEFAULT;
-        return NextResponse.json(
-            { error: errorMessage },
-            { status: StatusCode.InternalServerError }
-        );
+        catchError(error)
     }
 };
 
@@ -81,11 +78,7 @@ export const GET = async (req: NextRequest) => {
         return NextResponse.json({ articles });
 
     } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : ErrorMessage.ERROR_DEFAULT;
-        return NextResponse.json(
-            { error: errorMessage },
-            { status: StatusCode.InternalServerError }
-        );
+        catchError(error)
     }
 };
 
@@ -132,11 +125,6 @@ export const PATCH = async (req: NextRequest) => {
         });
 
     } catch (error) {
-        console.error("Like toggle error:", error);
-        const errorMessage = error instanceof Error ? error.message : ErrorMessage.ERROR_DEFAULT;
-        return NextResponse.json(
-            { error: errorMessage },
-            { status: StatusCode.InternalServerError }
-        );
+        catchError(error)
     }
 };

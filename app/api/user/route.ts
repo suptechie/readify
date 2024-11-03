@@ -1,5 +1,6 @@
 import connectDB from "@/lib/db/connectDB";
 import User from "@/lib/db/models/User";
+import catchError from "@/lib/utils/catchError";
 import { getTokenDetailsServer } from "@/lib/utils/getTokenData";
 import { ErrorMessage, StatusCode } from "@/types";
 import { revalidatePath } from "next/cache";
@@ -19,11 +20,7 @@ export const PUT = async (req: NextRequest) => {
         return NextResponse.json({ user });
 
     } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : ErrorMessage.ERROR_DEFAULT;
-        return NextResponse.json(
-            { error: errorMessage },
-            { status: StatusCode.InternalServerError }
-        );
+        catchError(error)
     }
 };
 
@@ -50,10 +47,6 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ user });
 
     } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : ErrorMessage.ERROR_DEFAULT;
-        return NextResponse.json(
-            { error: errorMessage },
-            { status: StatusCode.InternalServerError }
-        );
+        catchError(error);
     }
 }

@@ -1,5 +1,6 @@
 import connectDB from '@/lib/db/connectDB';
 import Article from '@/lib/db/models/Article';
+import catchError from '@/lib/utils/catchError';
 import { ErrorMessage, StatusCode } from '@/types';
 import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
@@ -10,10 +11,24 @@ type Props = {
 
 connectDB();
 
-export const GET = async (
-  request: NextRequest,
-  { params }: Props
-) => {
+export const DELETE = async (req: NextRequest, { params }: Props) => {
+  try {
+    const id = (await params).id;
+    if (!ObjectId.isValid(id)) {
+      return NextResponse.json(
+        { error: 'Invalid ID format' },
+        { status: 400 }
+      );
+    }
+
+    
+
+  } catch (error) {
+    catchError(error);
+  }
+};
+
+export const GET = async (req: NextRequest, { params }: Props) => {
   try {
     const id = (await params).id;
 
@@ -39,6 +54,14 @@ export const GET = async (
         }
       },
       {
+        $lookup: {
+          from: "users",
+          localField: "author",
+          foreignField: "_id",
+          as: "author"
+        }
+      },
+      {
         $addFields: {
           likeCount: { $size: "$likes" },
           userIds: {
@@ -47,12 +70,15 @@ export const GET = async (
               as: "like",
               in: { $toString: "$$like.user" }
             }
-          }
+          },
+          authorImage: { $arrayElemAt: ["$author.image", 0] },
+          authorUsername: { $arrayElemAt: ["$author.username", 0] }
         }
       },
       {
         $project: {
-          likes: 0
+          likes: 0,
+          author: 0
         }
       }
     ]))[0];
@@ -67,10 +93,6 @@ export const GET = async (
 
     return NextResponse.json({ article }, { status: 200 });
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : ErrorMessage.ERROR_DEFAULT;
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: StatusCode.InternalServerError }
-    );
+    catchError(error);
   }
 };
