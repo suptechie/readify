@@ -20,7 +20,7 @@ export const PUT = async (req: NextRequest) => {
         return NextResponse.json({ user });
 
     } catch (error) {
-        catchError(error);
+        return  catchError(error);
     }
 };
 
@@ -47,6 +47,6 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ user });
 
     } catch (error) {
-        catchError(error);
+        return  catchError(error);
     }
 }

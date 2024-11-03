@@ -41,10 +41,11 @@ const ArticleActions = ({ article }: Props) => {
             } else {
                 throw new Error('Failed to delete article');
             }
-        } catch (error) {
+            //eslint-disable-next-line
+        } catch (error: any) {
             toast({
                 title: "Error",
-                description: "Failed to delete the article. Please try again.",
+                description: error.message || "Failed to delete the article. Please try again.",
                 variant: "destructive",
             });
         }

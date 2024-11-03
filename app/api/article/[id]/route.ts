@@ -49,7 +49,7 @@ export const PUT = async (req: NextRequest, { params }: ArticleDetailsProps) => 
     );
 
   } catch (error) {
-    catchError(error);
+    return  catchError(error);
   }
 };
 
@@ -92,7 +92,7 @@ export const DELETE = async (req: NextRequest, { params }: ArticleDetailsProps) 
     );
 
   } catch (error) {
-    catchError(error);
+    return  catchError(error);
   }
 };
 
@@ -167,6 +167,6 @@ export const GET = async (req: NextRequest, { params }: ArticleDetailsProps) => 
 
     return NextResponse.json({ article }, { status: 200 });
   } catch (error) {
-    return catchError(error);
+    return  catchError(error);
   }
 };

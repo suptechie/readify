@@ -1,7 +1,6 @@
 import connectDB from "@/lib/db/connectDB";
 import Article from "@/lib/db/models/Article";
 import catchError from "@/lib/utils/catchError";
-import { ErrorMessage, StatusCode } from "@/types";
 import { IExtendedArticle } from "@/types/entities";
 import { NextResponse } from "next/server";
 
@@ -41,6 +40,6 @@ export const GET = async ()=>{
         return NextResponse.json({ articles });
         
     } catch (error) {
-        catchError(error);
+        return  catchError(error);
     }
 }

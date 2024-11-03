@@ -1,7 +1,7 @@
 import connectDB from "@/lib/db/connectDB";
 import Article from "@/lib/db/models/Article";
 import { getTokenDetailsServer } from "@/lib/utils/getTokenData";
-import { ErrorMessage, StatusCode } from "@/types";
+import { StatusCode } from "@/types";
 import { IExtendedArticle } from "@/types/entities";
 import { NextRequest, NextResponse } from "next/server";
 import { ObjectId } from 'mongodb';
@@ -28,7 +28,7 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.json(article);
 
     } catch (error) {
-        catchError(error)
+        return catchError(error)
     }
 };
 
@@ -79,7 +79,7 @@ export const GET = async (req: NextRequest) => {
         return NextResponse.json({ articles });
 
     } catch (error) {
-        catchError(error)
+        return catchError(error)
     }
 };
 
@@ -130,6 +130,6 @@ export const PATCH = async (req: NextRequest) => {
         });
 
     } catch (error) {
-        catchError(error)
+       return  catchError(error)
     }
 };
