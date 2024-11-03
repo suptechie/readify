@@ -32,7 +32,6 @@ export const createUser = async (userData: IUser): Promise<ErrorResponse | undef
         if (code === 11000) {
             return { message: ErrorMessage.ALREADY_EXISTS, code: StatusCode.Conflict };
         } else {
-            console.log(error);
             return { message: error.message ?? ErrorMessage.ERROR_DEFAULT };
         }
     }

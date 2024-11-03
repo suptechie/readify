@@ -26,7 +26,7 @@ import { createUser } from "@/actions/user.actions";
 import { Genres } from "@/types/entities";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { StatusCode } from "@/types";
+import { ErrorMessage, StatusCode } from "@/types";
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -76,8 +76,13 @@ const RegisterForm = () => {
         form.reset();
         router.push('/login');
       }
-    } catch (error) {
-      console.error("Registration failed:", error);
+      //eslint-disable-next-line
+    } catch (error: any) {
+      toast({
+        title: "Oops, Registration Failed",
+        variant: "destructive",
+        description: error.message || ErrorMessage.ERROR_DEFAULT
+      });
     } finally {
       setIsLoading(false);
     }
@@ -238,7 +243,7 @@ const RegisterForm = () => {
                   <FormLabel>Bio</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="I Write About Aliens"
+                      placeholder="I am an Alien 👽"
                       className="resize-none"
                       {...field}
                     />
