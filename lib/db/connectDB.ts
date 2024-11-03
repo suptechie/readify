@@ -24,7 +24,6 @@ const connectDB = async (): Promise<void> => {
         });
 
     } catch (error) {
-        console.error('Failed to connect to MongoDB:', error);
         if (process.env.NODE_ENV === 'production') {
             process.exit(1);
         }

@@ -14,7 +14,7 @@ const HomePage = async () => {
   const token = await getTokenData() as TokenPayload
 
   try {
-    articles = await fetchArticles('/api/home');
+    articles = await fetchArticles('/api');
   } catch (e) {
     error = e instanceof Error ? e : new Error('An unexpected error occurred');
     articles = [];

@@ -39,9 +39,6 @@ export const config = {
         '/login',
         '/register',
         '/profile',
-        '/api/user',
-        '/api/article', 
-        '/api/article/:path*',
-        '/api/cloudinary',
+        '/api/:path*'
     ],
 };
