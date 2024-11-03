@@ -3,7 +3,7 @@ import Article from "@/lib/db/models/Article";
 import User from "@/lib/db/models/User";
 import catchError from "@/lib/utils/catchError";
 import { getTokenDetailsServer } from "@/lib/utils/getTokenData";
-import { IExtendedArticle, IUser } from "@/types/entities";
+import { IExtendedArticle } from "@/types/entities";
 import { NextRequest, NextResponse } from "next/server";
 
 connectDB();

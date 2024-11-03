@@ -54,7 +54,7 @@ const PreferenceInput = ()=> {
                 },
                 body: JSON.stringify(preferences.map(pref => pref as Genres)),
             });
-
+            
             if (!response.ok) {
                 throw new Error('Failed to update preferences');
             }
@@ -64,6 +64,7 @@ const PreferenceInput = ()=> {
                 description: "Your preferences have been updated",
             });
         } catch (error) {
+            console.error('Error Updating Preference:', error);
             toast({
                 title: "Error",
                 description: "Failed to save preferences",

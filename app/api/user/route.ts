@@ -54,8 +54,6 @@ export const PATCH = async (req: NextRequest) => {
         }
 
         const preferences: Genres[] = await req.json();
-
-        console.log(preferences);
         
         const genres = Object.values(Genres);
 
