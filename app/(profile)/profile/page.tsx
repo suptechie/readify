@@ -1,5 +1,6 @@
 import ProfileSkeleton from "@/components/skeleton/ProfileSkeleton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { NEXT_PUBLIC_API_URL } from "@/config";
 import impDynamic from "next/dynamic";  
 import { headers } from "next/headers";
 
@@ -14,7 +15,7 @@ const Page = async () => {
         const headersList = await headers();
         const token = headersList.get('authorization')?.replace('Bearer ', '');
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
+        const response = await fetch(`${NEXT_PUBLIC_API_URL}/api/user`, {
             headers: {
                 Authorization: token ? `Bearer ${token}` : "",
             },
