@@ -1,3 +1,5 @@
+import { IExtendedArticle } from "./entities";
+
 export type RootLayoutProps = Readonly<{
     children: React.ReactNode;
 }>;
@@ -10,4 +12,21 @@ export interface ImageUploadProps {
 
 export type ArticleDetailsProps = {
     params: Promise<{ id: string; }>;
-  };
+};
+
+export type ArticleListProps = {
+    articles: IExtendedArticle[];
+    userId?: string;
+};
+
+export type ArticleCardProps = {
+    article: IExtendedArticle;
+    userId: string;
+};
+
+export type LikeButtonProps = {
+    id: string;
+    likesCount: number;
+    userIds: string[];
+    userId: string;
+};

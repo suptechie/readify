@@ -10,8 +10,8 @@ export const middleware = async (request: NextRequest) => {
     const isProtectedRoute = 
     urlPath === '/profile' || 
     urlPath === '/api/user' || 
-    urlPath === '/api/article' ||
-    urlPath === '/api/cloudinary';
+    urlPath === '/api/cloudinary' ||
+    urlPath.includes('/api/article');
 
     if (isProtectedRoute) {
         const isUnAuthorized = !token || !jwt.verifyToken(token.value);
@@ -41,7 +41,7 @@ export const config = {
         '/profile',
         '/api/user',
         '/api/article', 
-        '/api/article/[id]',
+        '/api/article/:path*',
         '/api/cloudinary',
     ],
 };

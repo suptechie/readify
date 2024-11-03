@@ -5,28 +5,22 @@ import { Heart } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { ErrorMessage } from '@/types';
 import Link from 'next/link';
+import { LikeButtonProps } from '@/types/props';
 
-type Props = {
-    id: string;
-    likesCount: number;
-    userIds: string[];
-};
-
-const LikeButton = ({ likesCount: initialLikesCount, userIds, id }: Props) => {
+const LikeButton = ({ likesCount: initialLikesCount, userIds, id, userId }: LikeButtonProps) => {
     const [isLiked, setIsLiked] = useState(false);
     const [likesCount, setLikesCount] = useState(initialLikesCount);
     const [isLoading, setIsLoading] = useState(false);
     const authRef = useRef(false)
 
     useEffect(() => {
-        const userId = localStorage.getItem('token') as string;
         authRef.current =  typeof userId === 'undefined' || userId === null;
         console.log(userId);
-
+        
         if (userIds.includes(userId)) {
             setIsLiked(true);
         }
-    }, [userIds]);
+    }, [userIds,userId]);
 
     const handleLike = async () => {
         if (isLoading) return;

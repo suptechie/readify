@@ -4,18 +4,17 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { fetchArticleDetails } from "@/lib/fetch/fetchWithToken";
 import Loader from "@/components/skeleton/Loader";
 import ArticleDetail from "@/components/common/ArticleDetails";
+import getTokenData from "@/lib/utils/getTokenData";
+import { TokenPayload } from "@/types";
+import { ArticleDetailsProps } from "@/types/props";
 
-type Props = {
-  params: Promise<{
-    id: string;
-  }>;
-};
-const ArticlePage = async ({ params }: Props) => {
+const ArticlePage = async ({ params }: ArticleDetailsProps) => {
   let article: IExtendedArticle | null;
   let error: Error | null = null;
+  const token = await getTokenData() as TokenPayload;
 
-  const id = (await params).id  
-  
+  const id = (await params).id;
+
   try {
     article = await fetchArticleDetails(id);
   } catch (e) {
@@ -23,9 +22,9 @@ const ArticlePage = async ({ params }: Props) => {
     article = null;
   }
 
-  
+
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 py-8">
       {error ? (
         <Alert variant="destructive">
           <AlertTitle>Error</AlertTitle>
@@ -33,7 +32,7 @@ const ArticlePage = async ({ params }: Props) => {
         </Alert>
       ) : (
         <Suspense fallback={<Loader />}>
-          <ArticleDetail article={article!} />
+          <ArticleDetail article={article!} userId={token.id!} />
         </Suspense>
       )}
     </div>

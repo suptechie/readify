@@ -7,12 +7,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Share2, Calendar } from "lucide-react";
 import Image from "next/image";
 import { toast } from '@/hooks/use-toast';
-import { IExtendedArticle } from '@/types/entities';
 import LikeButton from '../button/LikeButton';
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import DateFormatter from "./DateFormatter";
+import { ArticleCardProps } from "@/types/props";
+import ArticleActions from "../button/ArticleActions";
 
-const ArticleDetail = ({ article }: { article: IExtendedArticle; }) => {
+const ArticleDetail = ({ article, userId }: ArticleCardProps) => {
+  const [isAuthor, setIsAuthor] = useState(false);
+
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
     toast({
@@ -21,8 +24,14 @@ const ArticleDetail = ({ article }: { article: IExtendedArticle; }) => {
     });
   };
 
+  useEffect(() => {
+    if (article.author === userId) {
+      setIsAuthor(true);
+    }
+  }, [article, userId]);
+
   return (
-    <article className="container mx-auto px-4 py-8 max-w-4xl">
+    <article className="container mx-auto max-w-4xl">
       <header className="mb-8">
         <h1 className="text-4xl font-bold mb-4 text-foreground">{article.title}</h1>
         <div className="flex items-center gap-4 mb-4">
@@ -30,10 +39,10 @@ const ArticleDetail = ({ article }: { article: IExtendedArticle; }) => {
             <AvatarImage src={article.authorImage} alt={article.authorUsername} />
             <AvatarFallback>{article.authorUsername?.charAt(0).toUpperCase()}</AvatarFallback>
           </Avatar>
-          <div> 
+          <div>
             <p className="font-semibold text-foreground">{article.authorUsername}</p>
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              <Badge variant="secondary"  className="px-1 py-1">{article.genre}</Badge>
+              <Badge variant="secondary" className="px-1 py-1">{article.genre}</Badge>
               <div className="flex items-center">
                 <Calendar className="w-4 h-4 mr-1" />
                 <DateFormatter dateString={article.createdAt!.toString()} />
@@ -63,7 +72,7 @@ const ArticleDetail = ({ article }: { article: IExtendedArticle; }) => {
 
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center space-x-4">
-          <LikeButton id={article._id!} likesCount={article.likeCount} userIds={article.userIds} />
+          <LikeButton id={article._id!} likesCount={article.likeCount} userIds={article.userIds} userId={userId} />
           <Button
             variant="outline"
             size="sm"
@@ -73,6 +82,9 @@ const ArticleDetail = ({ article }: { article: IExtendedArticle; }) => {
             <Share2 className="h-4 w-4" />
             <span>Share</span>
           </Button>
+          {isAuthor && (
+            <ArticleActions article={article} />
+          )}
         </div>
       </div>
 

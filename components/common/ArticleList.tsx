@@ -1,23 +1,9 @@
-'use client'
 import ArticleCard from "@/components/common/ArticleCard";
-import { IExtendedArticle } from "@/types/entities";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { memo, useEffect } from "react";
+import { memo } from "react";
+import { ArticleListProps } from "@/types/props";
 
-type Props = {
-    articles: IExtendedArticle[];
-    token?:string;
-}
-
-
-const ArticleList = ({ articles, token }: Props) => {
-
-    useEffect(()=>{
-        if(token){
-            localStorage.setItem("token",token);
-        }
-    },[token])
-
+const ArticleList = ({ articles, userId }: ArticleListProps) => {
     if (articles.length === 0) {
         return (
             <Alert>
@@ -32,7 +18,7 @@ const ArticleList = ({ articles, token }: Props) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {articles.map((article) => (
-                <ArticleCard key={article._id} article={article} />
+                <ArticleCard key={article._id} article={article} userId={userId!} />
             ))}
         </div>
     );

@@ -27,7 +27,9 @@ export const fetchWithToken = async (input: RequestInfo, init?: RequestInit): Pr
 
 
 export const fetchArticles = async (url: string = '/api/article') => {
-    const response = await fetchWithToken(url);
+    const response = await fetchWithToken(url,{
+        cache:"no-cache"
+    });
     if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to fetch articles');

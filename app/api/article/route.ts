@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ObjectId } from 'mongodb';
 import Like from "@/lib/db/models/Like";
 import catchError from "@/lib/utils/catchError";
+import { revalidatePath } from "next/cache";
 
 connectDB();
 
@@ -101,6 +102,10 @@ export const PATCH = async (req: NextRequest) => {
                 { status: StatusCode.BadRequest }
             );
         }
+
+        revalidatePath('/home')
+        revalidatePath('/articles')
+        revalidatePath(`/articles/${body.id}`)
 
         const deleteResult = await Like.findOneAndDelete({ 
             article: body.id, 

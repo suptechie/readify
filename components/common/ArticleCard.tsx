@@ -1,80 +1,80 @@
-'use client'
+'use client';
 
-import { memo } from "react"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import Link from "next/link"
-import Image from "next/image"
-import { Share2, MoreVertical, Flag, Copy } from "lucide-react"
-import { toast } from "@/hooks/use-toast"
-import { IExtendedArticle } from "@/types/entities";
+import { memo } from "react";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
+import Image from "next/image";
+import { Share2, MoreVertical, Flag, Copy } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 import LikeButton from "../button/LikeButton";
 import { NEXT_PUBLIC_API_URL } from "@/config";
+import { ArticleCardProps } from "@/types/props";
 
-const ArticleCard = ({ article }: { article: IExtendedArticle })=> {
+const ArticleCard = ({ article, userId }: ArticleCardProps) => {
   const handleShare = () => {
-    navigator.clipboard.writeText(`${NEXT_PUBLIC_API_URL}/articles/${article._id}`)
+    navigator.clipboard.writeText(`${NEXT_PUBLIC_API_URL}/articles/${article._id}`);
     toast({
       title: "Link copied!",
       description: "The article link has been copied to your clipboard.",
-    })
-  }
+    });
+  };  
 
   const handleReport = () => {
     toast({
       title: "Article reported",
       description: "Thank you for your feedback. We'll review this article.",
-    })
-  }
+    });
+  };
 
-  const displayedTags = article.tags!.slice(0, 1)
-  const remainingTagsCount = article.tags!.length - 1
+  const displayedTags = article.tags!.slice(0, 1);
+  const remainingTagsCount = article.tags!.length - 1;
 
   return (
     <Card className="w-full overflow-hidden transition-shadow duration-300 hover:shadow-lg">
-      <CardHeader className="p-0">
-        <div className="relative h-48 w-full">
-          <Image 
-            src={article.image!} 
-            alt={article.title!} 
-            layout="fill" 
-            objectFit="cover"
-            className="transition-transform duration-300 hover:scale-105"
-          />
-        </div>
-      </CardHeader>
-      <CardContent className="p-4 flex flex-col gap-3">
-        <CardTitle className="line-clamp-1 hover:underline">
-          <Link href={`/articles/${article._id}`}>
+      <Link href={`/articles/${article._id}`}>
+        <CardHeader className="p-0">
+          <div className="relative h-48 w-full">
+            <Image
+              src={article.image!}
+              alt={article.title!}
+              layout="fill"
+              objectFit="cover"
+              className="transition-transform duration-300 hover:scale-105"
+            />
+          </div>
+        </CardHeader>
+        <CardContent className="p-4 flex flex-col gap-3">
+          <CardTitle className="line-clamp-1 hover:underline">
             {article.title}
-          </Link>
-        </CardTitle>
-        <CardDescription className="text-sm text-muted-foreground line-clamp-2">
-          {article.content}
-        </CardDescription>
-        <div className="flex flex-wrap gap-2">
-          <Badge variant="secondary" className="font-medium">
-            {article.genre}
-          </Badge>
-          {displayedTags.map((tag) => (
-            <Badge key={tag} variant="outline">
-              {tag}
+          </CardTitle>
+          <CardDescription className="text-sm text-muted-foreground line-clamp-2">
+            {article.content}
+          </CardDescription>
+          <div className="flex flex-wrap gap-2">
+            <Badge variant="secondary" className="font-medium">
+              {article.genre}
             </Badge>
-          ))}
-          {remainingTagsCount > 0 && (
-            <Badge variant="outline">+{remainingTagsCount}</Badge>
-          )}
-        </div>
-      </CardContent>
+            {displayedTags.map((tag) => (
+              <Badge key={tag} variant="outline">
+                {tag}
+              </Badge>
+            ))}
+            {remainingTagsCount > 0 && (
+              <Badge variant="outline">+{remainingTagsCount}</Badge>
+            )}
+          </div>
+        </CardContent>
+      </Link>
       <CardFooter className="flex justify-between items-center p-4 border-t">
         <div className="flex items-center space-x-2">
-          <LikeButton likesCount={article.likeCount} id={article._id!} userIds={article.userIds} />
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={handleShare} 
+          <LikeButton likesCount={article.likeCount} id={article._id!} userIds={article.userIds} userId={userId} />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleShare}
             aria-label="Share"
             className="hover:bg-primary/10"
           >
@@ -83,9 +83,9 @@ const ArticleCard = ({ article }: { article: IExtendedArticle })=> {
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               aria-label="More options"
               className="hover:bg-primary/10"
             >
@@ -105,7 +105,7 @@ const ArticleCard = ({ article }: { article: IExtendedArticle })=> {
         </DropdownMenu>
       </CardFooter>
     </Card>
-  )
-}
+  );
+};
 
 export default memo(ArticleCard);

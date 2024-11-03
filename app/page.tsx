@@ -33,7 +33,7 @@ const HomePage = async () => {
         </Alert>
       ) : (
         <Suspense fallback={<Loader />}>
-          <ArticleList articles={articles} token={token?.id} />
+          <ArticleList articles={articles} userId={token?.id} />
         </Suspense>
       )}
     </div>

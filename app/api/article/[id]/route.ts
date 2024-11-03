@@ -66,7 +66,7 @@ export const DELETE = async (req: NextRequest, { params }: ArticleDetailsProps) 
 
     await Article.findByIdAndDelete(id);
 
-    await Like.deleteOne({ article: id });
+    await Like.deleteMany({ article: id });
 
     return NextResponse.json(
       { message: "Article deleted" },
@@ -110,7 +110,7 @@ export const GET = async (req: NextRequest, { params }: ArticleDetailsProps) => 
           from: "users",
           localField: "author",
           foreignField: "_id",
-          as: "author"
+          as: "writer"
         }
       },
       {
@@ -123,17 +123,20 @@ export const GET = async (req: NextRequest, { params }: ArticleDetailsProps) => 
               in: { $toString: "$$like.user" }
             }
           },
-          authorImage: { $arrayElemAt: ["$author.image", 0] },
-          authorUsername: { $arrayElemAt: ["$author.username", 0] }
+          authorImage: { $arrayElemAt: ["$writer.image", 0] },
+          authorUsername: { $arrayElemAt: ["$writer.username", 0] },
+          author: { $toString: { $arrayElemAt: ["$writer._id", 0] } } 
         }
       },
       {
         $project: {
           likes: 0,
-          author: 0
+          writer:0
         }
       }
     ]))[0];
+
+    
 
     if (!article) {
       return NextResponse.json(
@@ -145,6 +148,6 @@ export const GET = async (req: NextRequest, { params }: ArticleDetailsProps) => 
 
     return NextResponse.json({ article }, { status: 200 });
   } catch (error) {
-    catchError(error);
+    return catchError(error);
   }
 };
