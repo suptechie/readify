@@ -1,18 +1,19 @@
 import connectDB from "@/lib/db/connectDB";
 import Article from "@/lib/db/models/Article";
+import User from "@/lib/db/models/User";
 import catchError from "@/lib/utils/catchError";
-import { IExtendedArticle } from "@/types/entities";
+import { getTokenDetailsServer } from "@/lib/utils/getTokenData";
+import { IExtendedArticle, IUser } from "@/types/entities";
 import { NextRequest, NextResponse } from "next/server";
 
 connectDB();
 
-export const GET = async (req:NextRequest) => {
+export const GET = async (req: NextRequest) => {
     try {
+        const tokenResult = await getTokenDetailsServer(req);
+        const isUserAuthenticated: boolean = tokenResult.success || !!tokenResult.data;
 
-        console.log(req);
-        
-        
-        const articles = await Article.aggregate([
+        let articles = await Article.aggregate([
             {
                 $lookup: {
                     from: "likes",
@@ -40,7 +41,21 @@ export const GET = async (req:NextRequest) => {
             }
         ]) as IExtendedArticle[];
 
-        return NextResponse.json({ articles });
+        if (isUserAuthenticated) {
+            const user = await User.findById(tokenResult.data?.id).lean();
+            
+            if (user?.preferences?.length) {
+                articles = articles.filter(article => 
+                    article.genre && user.preferences!.includes(article.genre)
+                );
+            }
+        }
+
+        return NextResponse.json({ 
+            success: true,
+            articles,
+            totalCount: articles.length
+        });
 
     } catch (error) {
         return catchError(error);

@@ -3,6 +3,7 @@ import User from "@/lib/db/models/User";
 import catchError from "@/lib/utils/catchError";
 import { getTokenDetailsServer } from "@/lib/utils/getTokenData";
 import { CustomError, ErrorMessage, StatusCode } from "@/types";
+import { Genres } from "@/types/entities";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -25,13 +26,13 @@ export const PUT = async (req: NextRequest) => {
 };
 
 
-export async function GET(req: NextRequest) {
+export const GET = async (req: NextRequest) => {
     try {
         const tokenResult = await getTokenDetailsServer(req);
         if (!tokenResult.success || !tokenResult.data) {
             throw new CustomError(tokenResult.error?.message!, tokenResult.error?.code!);
         }
-        
+
         const user = await User.findById(tokenResult.data.id).select("-password").lean();
 
         if (!user) {
@@ -43,4 +44,32 @@ export async function GET(req: NextRequest) {
     } catch (error) {
         return catchError(error);
     }
-}
+};
+
+export const PATCH = async (req: NextRequest) => {
+    try {
+        const tokenResult = await getTokenDetailsServer(req);
+        if (!tokenResult.success || !tokenResult.data) {
+            throw new CustomError(tokenResult.error?.message!, tokenResult.error?.code!);
+        }
+
+        const preferences: Genres[] = await req.json();
+
+        console.log(preferences);
+        
+        const genres = Object.values(Genres);
+
+        preferences.forEach(el => {
+            if (!genres.includes(el)) {
+                throw new CustomError(`Invalid Preference: ${el}`, StatusCode.BadRequest);
+            }
+        });
+
+        await User.findByIdAndUpdate(tokenResult.data.id, { preferences });
+
+        return NextResponse.json({ message: "Preference has updated" });
+
+    } catch (error) {
+        return catchError(error);
+    }
+};

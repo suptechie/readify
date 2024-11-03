@@ -18,7 +18,6 @@ export enum ErrorMessage {
     ALREADY_EXISTS = "This resource already exists",
 }
 
-
 export enum StatusCode {
     Success = 200,
     Created = 201,
@@ -53,3 +52,5 @@ export class CustomError extends Error {
         this.statusCode = statusCode;
     }
 }
+
+export type IdProps = { id: string; }
