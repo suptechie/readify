@@ -1,10 +1,9 @@
 'use client';
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Share2, Calendar } from "lucide-react";
+import { Calendar } from "lucide-react";
 import Image from "next/image";
 import { toast } from '@/hooks/use-toast';
 import LikeButton from '../button/LikeButton';
@@ -12,17 +11,10 @@ import { memo, useEffect, useState } from "react";
 import DateFormatter from "./DateFormatter";
 import { ArticleCardProps } from "@/types/props";
 import ArticleActions from "../button/ArticleActions";
+import ShareButton from "../button/ShareButton";
 
 const ArticleDetail = ({ article, userId }: ArticleCardProps) => {
   const [isAuthor, setIsAuthor] = useState(false);
-
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    toast({
-      title: "Link copied!",
-      description: "The article link has been copied to your clipboard.",
-    });
-  };
 
   useEffect(() => {
     if (article.author === userId) {
@@ -73,19 +65,11 @@ const ArticleDetail = ({ article, userId }: ArticleCardProps) => {
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center space-x-4">
           <LikeButton id={article._id!} likesCount={article.likeCount} userIds={article.userIds} userId={userId} />
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleShare}
-            className="flex items-center space-x-2"
-          >
-            <Share2 className="h-4 w-4" />
-            <span>Share</span>
-          </Button>
-          {isAuthor && (
-            <ArticleActions article={article} />
-          )}
+          <ShareButton id={article._id!} />
         </div>
+        {isAuthor && (
+          <ArticleActions article={article} />
+        )}
       </div>
 
       <Separator className="mb-8" />

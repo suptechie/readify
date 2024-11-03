@@ -32,7 +32,7 @@ const ArticlePage = async ({ params }: ArticleDetailsProps) => {
         </Alert>
       ) : (
         <Suspense fallback={<Loader />}>
-          <ArticleDetail article={article!} userId={token.id!} />
+          <ArticleDetail article={article!} userId={token?.id!} />
         </Suspense>
       )}
     </div>

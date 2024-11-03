@@ -3,13 +3,18 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { memo } from "react";
 import { ArticleListProps } from "@/types/props";
 
-const ArticleList = ({ articles, userId }: ArticleListProps) => {
+const ArticleList = ({ articles, userId, isHome }: ArticleListProps) => {
     if (articles.length === 0) {
         return (
             <Alert>
                 <AlertTitle>No Articles</AlertTitle>
                 <AlertDescription>
-                    You haven&apos;t created any articles yet. Click the &quot;Add Article&quot; button to get started!
+                    {isHome?(
+                        "There is no Articles Available. Start by creating your own!."
+                    ):(
+                        `You haven't created any articles yet. Click the "Add Article" button to get started!`
+                    )}
+                    
                 </AlertDescription>
             </Alert>
         );

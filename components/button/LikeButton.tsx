@@ -15,7 +15,6 @@ const LikeButton = ({ likesCount: initialLikesCount, userIds, id, userId }: Like
 
     useEffect(() => {
         authRef.current =  typeof userId === 'undefined' || userId === null;
-        console.log(userId);
         
         if (userIds.includes(userId)) {
             setIsLiked(true);

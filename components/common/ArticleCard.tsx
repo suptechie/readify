@@ -7,20 +7,14 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import Image from "next/image";
-import { Share2, MoreVertical, Flag, Copy } from "lucide-react";
+import { MoreVertical, Flag, Copy } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import LikeButton from "../button/LikeButton";
-import { NEXT_PUBLIC_API_URL } from "@/config";
 import { ArticleCardProps } from "@/types/props";
+import ShareButton from "../button/ShareButton";
+import { NEXT_PUBLIC_API_URL } from "@/config";
 
 const ArticleCard = ({ article, userId }: ArticleCardProps) => {
-  const handleShare = () => {
-    navigator.clipboard.writeText(`${NEXT_PUBLIC_API_URL}/articles/${article._id}`);
-    toast({
-      title: "Link copied!",
-      description: "The article link has been copied to your clipboard.",
-    });
-  };  
 
   const handleReport = () => {
     toast({
@@ -71,15 +65,7 @@ const ArticleCard = ({ article, userId }: ArticleCardProps) => {
       <CardFooter className="flex justify-between items-center p-4 border-t">
         <div className="flex items-center space-x-2">
           <LikeButton likesCount={article.likeCount} id={article._id!} userIds={article.userIds} userId={userId} />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleShare}
-            aria-label="Share"
-            className="hover:bg-primary/10"
-          >
-            <Share2 className="h-5 w-5 text-muted-foreground" />
-          </Button>
+          <ShareButton id={article._id!} />
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -93,7 +79,10 @@ const ArticleCard = ({ article, userId }: ArticleCardProps) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuItem onClick={handleShare} className="cursor-pointer">
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(`${NEXT_PUBLIC_API_URL}/articles/${article._id}`)}
+              className="cursor-pointer"
+            >
               <Copy className="mr-2 h-4 w-4" />
               <span>Copy link</span>
             </DropdownMenuItem>

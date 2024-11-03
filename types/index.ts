@@ -36,3 +36,11 @@ export enum StatusCode {
     BadGateway = 502,
     ServiceUnavailable = 503,
 }
+
+export interface ShareOption {
+    name: string;
+    icon: React.ReactNode;
+    color: string;
+    hoverColor: string;
+    shareUrl: (url: string) => string;
+}

@@ -17,6 +17,7 @@ export type ArticleDetailsProps = {
 export type ArticleListProps = {
     articles: IExtendedArticle[];
     userId?: string;
+    isHome?:boolean;
 };
 
 export type ArticleCardProps = {
