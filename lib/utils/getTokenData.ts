@@ -64,11 +64,11 @@ export const getTokenDetailsServer = async (req: NextRequest): Promise<TokenDeta
             };
         }
         // eslint-disable-next-line 
-    } catch (error) {
+    } catch (error: any) {
         return {
             success: false,
             error: {
-                message: ErrorMessage.UNAUTHORIZED,
+                message: error.message || ErrorMessage.UNAUTHORIZED,
                 code: StatusCode.Unauthorized
             }
         };

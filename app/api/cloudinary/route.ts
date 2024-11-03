@@ -18,8 +18,8 @@ export const POST = async (request: NextRequest) => {
     const tokenResult = await getTokenDetailsServer(request);
     if (!tokenResult.success || !tokenResult.data) {
       return NextResponse.json(
-        { error: tokenResult.error?.message ?? ErrorMessage.UNAUTHORIZED },
-        { status: tokenResult.error?.code ?? StatusCode.Unauthorized }
+        { error: tokenResult.error?.message },
+        { status: tokenResult.error?.code }
       );
     };
 

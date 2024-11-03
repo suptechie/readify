@@ -7,3 +7,7 @@ export interface ImageUploadProps {
     value: string;
     folder: string;
 }
+
+export type ArticleDetailsProps = {
+    params: Promise<{ id: string; }>;
+  };

@@ -16,8 +16,8 @@ export const POST = async (req: NextRequest) => {
         const tokenResult = await getTokenDetailsServer(req);
         if (!tokenResult.success || !tokenResult.data) {
             return NextResponse.json(
-                { error: tokenResult.error?.message ?? ErrorMessage.UNAUTHORIZED },
-                { status: tokenResult.error?.code ?? StatusCode.Unauthorized }
+                { error:tokenResult.error?.message},
+                { status:tokenResult.error?.code }
             );
         };
 
@@ -37,8 +37,8 @@ export const GET = async (req: NextRequest) => {
         const tokenResult = await getTokenDetailsServer(req);
         if (!tokenResult.success || !tokenResult.data) {
             return NextResponse.json(
-                { error: tokenResult.error?.message ?? ErrorMessage.UNAUTHORIZED },
-                { status: tokenResult.error?.code ?? StatusCode.Unauthorized }
+                { error:tokenResult.error?.message},
+                { status:tokenResult.error?.code }
             );
         }
 
@@ -88,8 +88,8 @@ export const PATCH = async (req: NextRequest) => {
         const tokenResult = await getTokenDetailsServer(req);
         if (!tokenResult.success || !tokenResult.data) {
             return NextResponse.json(
-                { error: tokenResult.error?.message ?? ErrorMessage.UNAUTHORIZED },
-                { status: tokenResult.error?.code ?? StatusCode.Unauthorized }
+                { error:tokenResult.error?.message},
+                { status:tokenResult.error?.code }
             );
         }
 

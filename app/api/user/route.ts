@@ -20,7 +20,7 @@ export const PUT = async (req: NextRequest) => {
         return NextResponse.json({ user });
 
     } catch (error) {
-        catchError(error)
+        catchError(error);
     }
 };
 
@@ -30,8 +30,8 @@ export async function GET(req: NextRequest) {
         const tokenResult = await getTokenDetailsServer(req);
         if (!tokenResult.success || !tokenResult.data) {
             return NextResponse.json(
-                { error: tokenResult.error?.message ?? ErrorMessage.UNAUTHORIZED },
-                { status: tokenResult.error?.code ?? StatusCode.Unauthorized }
+                { error: tokenResult.error?.message },
+                { status: tokenResult.error?.code }
             );
         };
 

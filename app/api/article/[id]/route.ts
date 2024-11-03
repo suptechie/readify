@@ -1,17 +1,18 @@
 import connectDB from '@/lib/db/connectDB';
 import Article from '@/lib/db/models/Article';
+import Like from '@/lib/db/models/Like';
 import catchError from '@/lib/utils/catchError';
+import { getTokenDetailsServer } from '@/lib/utils/getTokenData';
 import { ErrorMessage, StatusCode } from '@/types';
+import { ArticleDetailsProps } from '@/types/props';
 import { ObjectId } from 'mongodb';
+import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
-type Props = {
-  params: Promise<{ id: string; }>;
-};
 
 connectDB();
 
-export const DELETE = async (req: NextRequest, { params }: Props) => {
+export const PUT = async (req: NextRequest, { params }: ArticleDetailsProps) => {
   try {
     const id = (await params).id;
     if (!ObjectId.isValid(id)) {
@@ -21,14 +22,65 @@ export const DELETE = async (req: NextRequest, { params }: Props) => {
       );
     }
 
-    
+    const tokenResult = await getTokenDetailsServer(req);
+    if (!tokenResult.success || !tokenResult.data) {
+      return NextResponse.json(
+        { error: tokenResult.error?.message },
+        { status: tokenResult.error?.code }
+      );
+    };
+
+    const body = await req.json();
+
+    await Article.findByIdAndUpdate(id, body);
+
+    revalidatePath(`/article/${id}`);
+
+    return NextResponse.json(
+      { message: "Article Updated" },
+    );
 
   } catch (error) {
     catchError(error);
   }
 };
 
-export const GET = async (req: NextRequest, { params }: Props) => {
+
+export const DELETE = async (req: NextRequest, { params }: ArticleDetailsProps) => {
+  try {
+    const id = (await params).id;
+    if (!ObjectId.isValid(id)) {
+      return NextResponse.json(
+        { error: 'Invalid ID format' },
+        { status: 400 }
+      );
+    }
+
+    const tokenResult = await getTokenDetailsServer(req);
+    if (!tokenResult.success || !tokenResult.data) {
+      return NextResponse.json(
+        { error: tokenResult.error?.message },
+        { status: tokenResult.error?.code }
+      );
+    };
+
+    await Article.findByIdAndDelete(id);
+
+    await Like.deleteOne({ article: id });
+
+    return NextResponse.json(
+      { message: "Article deleted" },
+    );
+
+  } catch (error) {
+    catchError(error);
+  }
+};
+
+
+
+
+export const GET = async (req: NextRequest, { params }: ArticleDetailsProps) => {
   try {
     const id = (await params).id;
 
