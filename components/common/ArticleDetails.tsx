@@ -5,7 +5,6 @@ import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar } from "lucide-react";
 import Image from "next/image";
-import { toast } from '@/hooks/use-toast';
 import LikeButton from '../button/LikeButton';
 import { memo, useEffect, useState } from "react";
 import DateFormatter from "./DateFormatter";
