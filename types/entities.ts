@@ -44,8 +44,8 @@ export interface IArticle {
     genre?: Genres;
     image?: string;
     tags?: string[];
-    createdAt?: string;
-    updatedAt?: string;
+    createdAt?: string|Date;
+    updatedAt?: string|Date;
 }
 
 export interface ILike {

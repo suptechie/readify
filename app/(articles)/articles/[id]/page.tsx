@@ -1,21 +1,41 @@
-import { memo } from "react";
+import { memo, Suspense } from "react";
+import { IExtendedArticle } from "@/types/entities";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { fetchArticleDetails } from "@/lib/fetch/fetchWithToken";
+import Loader from "@/components/skeleton/Loader";
 import ArticleDetail from "@/components/common/ArticleDetails";
-import { articles } from "@/constants/data";
 
-type ArticlePageProps = Promise<{
-  id: string;
-}>;
+type Props = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+const ArticlePage = async ({ params }: Props) => {
+  let article: IExtendedArticle | null;
+  let error: Error | null = null;
 
-const ArticlePage = async ({ params }: { params: ArticlePageProps; }) => {
-  const id = (await params).id;
-
-  const article = await fetchArticleDetails(`${id}`);
+  const id = (await params).id  
   
+  try {
+    article = await fetchArticleDetails(id);
+  } catch (e) {
+    error = e instanceof Error ? e : new Error('An unexpected error occurred');
+    article = null;
+  }
 
+  
   return (
     <div className="container mx-auto px-4">
-      <ArticleDetail article={articles[0]!} />
+      {error ? (
+        <Alert variant="destructive">
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error.message}</AlertDescription>
+        </Alert>
+      ) : (
+        <Suspense fallback={<Loader />}>
+          <ArticleDetail article={article!} />
+        </Suspense>
+      )}
     </div>
   );
 };

@@ -7,26 +7,18 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
 import Image from "next/image"
-import { Share2, MoreVertical, Flag, Bookmark, Copy } from "lucide-react"
+import { Share2, MoreVertical, Flag, Copy } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
 import { IExtendedArticle } from "@/types/entities";
 import LikeButton from "../button/LikeButton";
-
-const MAX_TAGS_SHOWN = 1
+import { NEXT_PUBLIC_API_URL } from "@/config";
 
 const ArticleCard = ({ article }: { article: IExtendedArticle })=> {
   const handleShare = () => {
-    navigator.clipboard.writeText(`/articles/${article._id}`)
+    navigator.clipboard.writeText(`${NEXT_PUBLIC_API_URL}/articles/${article._id}`)
     toast({
       title: "Link copied!",
       description: "The article link has been copied to your clipboard.",
-    })
-  }
-
-  const handleBookmark = () => {
-    toast({
-      title: "Article bookmarked!",
-      description: "You can find this article in your bookmarks.",
     })
   }
 
@@ -37,8 +29,8 @@ const ArticleCard = ({ article }: { article: IExtendedArticle })=> {
     })
   }
 
-  const displayedTags = article.tags!.slice(0, MAX_TAGS_SHOWN)
-  const remainingTagsCount = article.tags!.length - MAX_TAGS_SHOWN
+  const displayedTags = article.tags!.slice(0, 1)
+  const remainingTagsCount = article.tags!.length - 1
 
   return (
     <Card className="w-full overflow-hidden transition-shadow duration-300 hover:shadow-lg">
@@ -101,10 +93,6 @@ const ArticleCard = ({ article }: { article: IExtendedArticle })=> {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuItem onClick={handleBookmark} className="cursor-pointer">
-              <Bookmark className="mr-2 h-4 w-4" />
-              <span>Bookmark</span>
-            </DropdownMenuItem>
             <DropdownMenuItem onClick={handleShare} className="cursor-pointer">
               <Copy className="mr-2 h-4 w-4" />
               <span>Copy link</span>

@@ -7,10 +7,13 @@ export const middleware = async (request: NextRequest) => {
     const token = request.cookies.get("token");
     const urlPath = request.nextUrl.pathname;
 
-    console.log(urlPath);
-    
+    const isProtectedRoute = 
+    urlPath === '/profile' || 
+    urlPath === '/api/user' || 
+    urlPath === '/api/article' ||
+    urlPath === '/api/cloudinary';
 
-    if (urlPath === '/profile' || urlPath === '/api/user' || urlPath.includes('/api/article') || urlPath === '/api/cloudinary') {
+    if (isProtectedRoute) {
         const isUnAuthorized = !token || !jwt.verifyToken(token.value);
 
         if (isUnAuthorized) {
@@ -23,7 +26,7 @@ export const middleware = async (request: NextRequest) => {
         const response = NextResponse.next();
         response.headers.set("Authorization", `Bearer ${token.value}`);
         return response;
-    } else {
+    }  else {
         if (token && jwt.verifyToken(token.value)) {
             return NextResponse.rewrite(new URL('/404', request.url));
         }
@@ -32,5 +35,13 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-    matcher: ['/login', '/register', '/profile', '/api/user', '/api/article', '/api/cloudinary'],
+    matcher: [
+        '/login',
+        '/register',
+        '/profile',
+        '/api/user',
+        '/api/article', 
+        '/api/article/[id]',
+        '/api/cloudinary',
+    ],
 };

@@ -1,29 +1,16 @@
 'use client'
 
-import { useState } from 'react'
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { Heart, Share2 } from "lucide-react"
+import { Share2, Calendar, Clock } from "lucide-react"
 import Image from "next/image"
-import { toast } from '@/hooks/use-toast';
-import { IExtendedArticle } from '@/types/entities';
+import { toast } from '@/hooks/use-toast'
+import { IExtendedArticle } from '@/types/entities'
+import LikeButton from '../button/LikeButton'
+import { memo } from "react";
 
-
-export default function ArticleDetail({ article }: { article: IExtendedArticle }) {
-  const [likes, setLikes] = useState(article.likeCount!)
-  const [isLiked, setIsLiked] = useState(false)
-
-  const handleLike = () => {
-    if (isLiked) {
-      setLikes(likes - 1)
-    } else {
-      setLikes(likes + 1)
-    }
-    setIsLiked(!isLiked)
-  }
-
+const ArticleDetail =({ article }: { article: IExtendedArticle })=> {
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href)
     toast({
@@ -33,74 +20,72 @@ export default function ArticleDetail({ article }: { article: IExtendedArticle }
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <Card className="overflow-hidden">
-        <CardHeader className="p-0">
-          <div className="relative h-[400px] w-full">
-            <Image 
-              src={article.image!} 
-              alt={article.title!} 
-              layout="fill" 
-              objectFit="cover" 
-              priority
-            />
+    <article className="container mx-auto px-4 py-8 max-w-4xl">
+      <header className="mb-8">
+        <h1 className="text-4xl font-bold mb-4 text-foreground">{article.title}</h1>
+        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
+          <Badge variant="secondary" className="px-2 py-1">{article.genre}</Badge>
+          <div className="flex items-center">
+            <Calendar className="w-4 h-4 mr-1" />
+            <time dateTime={article.createdAt?.toString()}>{new Date(article.createdAt!).toLocaleDateString()}</time>
           </div>
-        </CardHeader>
-        <CardContent className="p-6 space-y-6">
-          <div className="space-y-2">
-            <CardTitle className="text-3xl font-bold">{article.title}</CardTitle>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <Badge variant="secondary">{article.genre}</Badge>
-              <span>Published on {article.createdAt}</span>
-            </div>
+          <div className="flex items-center">
+            <Clock className="w-4 h-4 mr-1" />
+            <span>{new Date(article.createdAt!).toLocaleTimeString()}</span>
           </div>
-          
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleLike}
-                className={`flex items-center space-x-2 ${isLiked ? 'text-primary' : ''}`}
-              >
-                <Heart className={`h-5 w-5 ${isLiked ? 'fill-primary' : ''}`} />
-                <span>{likes}</span>
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleShare}
-                className="flex items-center space-x-2"
-              >
-                <Share2 className="h-5 w-5" />
-                <span>Share</span>
-              </Button>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {article.tags!.map((tag) => (
-                <Badge key={tag} variant="outline">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </div>
+        </div>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {article.tags!.map((tag) => (
+            <Badge key={tag} variant="outline" className="px-2 py-1">
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      </header>
 
-          <Separator />
+      <div className="relative aspect-video w-full mb-8 rounded-lg overflow-hidden shadow-lg">
+        <Image 
+          src={article.image!} 
+          alt={article.title!} 
+          layout="fill" 
+          objectFit="cover" 
+          priority
+          className="transition-transform duration-300 hover:scale-105"
+        />
+      </div>
 
-          <div className="prose prose-lg max-w-none">
-            {article.content!.split('\n').map((paragraph, index) => (
-              <p key={index} className="mb-4">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        </CardContent>
-        <CardFooter className="p-6 border-t">
-          <p className="text-sm text-muted-foreground">
-            Last updated on {article.updatedAt}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center space-x-4">
+          <LikeButton id={article._id!} likesCount={article.likeCount} userIds={article.userIds} />
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleShare}
+            className="flex items-center space-x-2"
+          >
+            <Share2 className="h-4 w-4" />
+            <span>Share</span>
+          </Button>
+        </div>
+      </div>
+
+      <Separator className="mb-8" />
+
+      <div className="prose prose-lg max-w-none dark:prose-invert">
+        {article.content!.split('\n').map((paragraph, index) => (
+          <p key={index} className="mb-4">
+            {paragraph}
           </p>
-        </CardFooter>
-      </Card>
-    </div>
+        ))}
+      </div>
+
+      <Separator className="my-8" />
+
+      <footer className="text-sm text-muted-foreground">
+        <p>Last updated on {new Date(article.updatedAt!).toLocaleString()}</p>
+      </footer>
+    </article>
   )
 }
+
+export default memo(ArticleDetail)
