@@ -7,7 +7,10 @@ export const middleware = async (request: NextRequest) => {
     const token = request.cookies.get("token");
     const urlPath = request.nextUrl.pathname;
 
-    if (urlPath === '/profile' || urlPath === '/api/user' || urlPath === '/api/article' || urlPath === '/api/cloudinary') {
+    console.log(urlPath);
+    
+
+    if (urlPath === '/profile' || urlPath === '/api/user' || urlPath.includes('/api/article') || urlPath === '/api/cloudinary') {
         const isUnAuthorized = !token || !jwt.verifyToken(token.value);
 
         if (isUnAuthorized) {

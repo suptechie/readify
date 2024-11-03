@@ -35,3 +35,15 @@ export const fetchArticles = async (url: string = '/api/article') => {
     const data = await response.json();
     return data.articles as IExtendedArticle[];
 };
+
+export const fetchArticleDetails = async (id:string)=>{
+    const response = await fetchWithToken(`/api/articles/${id}`);
+    console.log(response);
+    
+    if(!response.ok){
+        const errorData = await response.json();
+        throw new Error(errorData.error||"Failed to fetch article Details");
+    }
+    const data = await response.json();
+    return data.article as IExtendedArticle;
+}
