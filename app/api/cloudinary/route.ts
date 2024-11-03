@@ -1,6 +1,7 @@
 import { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_CLOUD_NAME } from '@/config';
 import catchError from '@/lib/utils/catchError';
 import { getTokenDetailsServer } from '@/lib/utils/getTokenData';
+import { CustomError } from '@/types';
 import { v2 as cloudinary } from 'cloudinary';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -16,11 +17,9 @@ export const POST = async (request: NextRequest) => {
 
     const tokenResult = await getTokenDetailsServer(request);
     if (!tokenResult.success || !tokenResult.data) {
-      return NextResponse.json(
-        { error: tokenResult.error?.message },
-        { status: tokenResult.error?.code }
-      );
-    };
+      throw new CustomError(tokenResult.error?.message!,tokenResult.error?.code!)
+  }
+
 
     const { folder } = await request.json();
 

@@ -4,7 +4,7 @@ import Article from '@/lib/db/models/Article';
 import Like from '@/lib/db/models/Like';
 import catchError from '@/lib/utils/catchError';
 import { getTokenDetailsServer } from '@/lib/utils/getTokenData';
-import { ErrorMessage, StatusCode } from '@/types';
+import { CustomError, ErrorMessage, StatusCode } from '@/types';
 import { ArticleDetailsProps } from '@/types/props';
 import { ObjectId } from 'mongodb';
 import { revalidatePath } from 'next/cache';
@@ -24,19 +24,14 @@ export const PUT = async (req: NextRequest, { params }: ArticleDetailsProps) => 
   try {
     const id = (await params).id;
     if (!ObjectId.isValid(id)) {
-      return NextResponse.json(
-        { error: 'Invalid ID format' },
-        { status: 400 }
-      );
+      throw new CustomError("Invalid Id Format", StatusCode.BadRequest);
     }
 
     const tokenResult = await getTokenDetailsServer(req);
     if (!tokenResult.success || !tokenResult.data) {
-      return NextResponse.json(
-        { error: tokenResult.error?.message },
-        { status: tokenResult.error?.code }
-      );
-    };
+      throw new CustomError(tokenResult.error?.message!, tokenResult.error?.code!);
+    }
+
 
     const body = await req.json();
 
@@ -49,7 +44,7 @@ export const PUT = async (req: NextRequest, { params }: ArticleDetailsProps) => 
     );
 
   } catch (error) {
-    return  catchError(error);
+    return catchError(error);
   }
 };
 
@@ -58,19 +53,13 @@ export const DELETE = async (req: NextRequest, { params }: ArticleDetailsProps) 
   try {
     const id = (await params).id;
     if (!ObjectId.isValid(id)) {
-      return NextResponse.json(
-        { error: 'Invalid ID format' },
-        { status: 400 }
-      );
+      throw new CustomError("Invalid Id Format", StatusCode.BadRequest);
     }
-    
+
     const tokenResult = await getTokenDetailsServer(req);
     if (!tokenResult.success || !tokenResult.data) {
-      return NextResponse.json(
-        { error: tokenResult.error?.message },
-        { status: tokenResult.error?.code }
-      );
-    };
+      throw new CustomError(tokenResult.error?.message!, tokenResult.error?.code!);
+    }
 
     const article = await Article.findById(id);
     if (!article) {
@@ -92,7 +81,7 @@ export const DELETE = async (req: NextRequest, { params }: ArticleDetailsProps) 
     );
 
   } catch (error) {
-    return  catchError(error);
+    return catchError(error);
   }
 };
 
@@ -104,10 +93,7 @@ export const GET = async (req: NextRequest, { params }: ArticleDetailsProps) => 
     const id = (await params).id;
 
     if (!ObjectId.isValid(id)) {
-      return NextResponse.json(
-        { error: 'Invalid ID format' },
-        { status: 400 }
-      );
+      throw new CustomError("Invalid Id Format", StatusCode.BadRequest);
     }
 
     const article = (await Article.aggregate([
@@ -158,15 +144,12 @@ export const GET = async (req: NextRequest, { params }: ArticleDetailsProps) => 
 
 
     if (!article) {
-      return NextResponse.json(
-        { error: ErrorMessage.NOT_FOUND },
-        { status: StatusCode.NotFound }
-      );
+      throw new CustomError(ErrorMessage.NOT_FOUND, StatusCode.NotFound);
     }
 
 
     return NextResponse.json({ article }, { status: 200 });
   } catch (error) {
-    return  catchError(error);
+    return catchError(error);
   }
 };

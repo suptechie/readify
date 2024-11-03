@@ -3,7 +3,7 @@ import { connect, connection, connections } from 'mongoose';
 
 const connectDB = async (): Promise<void> => {
     try {
-        
+
         if (connections[0].readyState) {
             console.log('Already connected to MongoDB');
             return;
@@ -24,9 +24,8 @@ const connectDB = async (): Promise<void> => {
         });
 
     } catch (error) {
-        if (process.env.NODE_ENV === 'production') {
-            process.exit(1);
-        }
+        console.log(error);
+        process.exit(1);
     }
 };
 

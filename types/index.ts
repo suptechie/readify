@@ -44,3 +44,12 @@ export interface ShareOption {
     hoverColor: string;
     shareUrl: (url: string) => string;
 }
+
+export class CustomError extends Error {
+    statusCode:StatusCode
+    constructor(message:string,statusCode:StatusCode){
+        super();
+        this.message = message
+        this.statusCode = statusCode;
+    }
+}

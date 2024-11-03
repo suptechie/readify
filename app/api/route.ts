@@ -2,13 +2,16 @@ import connectDB from "@/lib/db/connectDB";
 import Article from "@/lib/db/models/Article";
 import catchError from "@/lib/utils/catchError";
 import { IExtendedArticle } from "@/types/entities";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 connectDB();
 
-export const GET = async ()=>{
+export const GET = async (req:NextRequest) => {
     try {
 
+        console.log(req);
+        
+        
         const articles = await Article.aggregate([
             {
                 $lookup: {
@@ -38,8 +41,8 @@ export const GET = async ()=>{
         ]) as IExtendedArticle[];
 
         return NextResponse.json({ articles });
-        
+
     } catch (error) {
-        return  catchError(error);
+        return catchError(error);
     }
-}
+};
