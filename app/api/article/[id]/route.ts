@@ -1,3 +1,4 @@
+import cloudinary from 'cloudinary';
 import connectDB from '@/lib/db/connectDB';
 import Article from '@/lib/db/models/Article';
 import Like from '@/lib/db/models/Like';
@@ -8,9 +9,16 @@ import { ArticleDetailsProps } from '@/types/props';
 import { ObjectId } from 'mongodb';
 import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
+import { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_CLOUD_NAME } from '@/config';
 
 
 connectDB();
+
+cloudinary.v2.config({
+  cloud_name: CLOUDINARY_CLOUD_NAME,
+  api_key: CLOUDINARY_API_KEY,
+  api_secret: CLOUDINARY_API_SECRET
+});
 
 export const PUT = async (req: NextRequest, { params }: ArticleDetailsProps) => {
   try {
@@ -55,7 +63,7 @@ export const DELETE = async (req: NextRequest, { params }: ArticleDetailsProps) 
         { status: 400 }
       );
     }
-
+    
     const tokenResult = await getTokenDetailsServer(req);
     if (!tokenResult.success || !tokenResult.data) {
       return NextResponse.json(
@@ -63,6 +71,17 @@ export const DELETE = async (req: NextRequest, { params }: ArticleDetailsProps) 
         { status: tokenResult.error?.code }
       );
     };
+
+    const article = await Article.findById(id);
+    if (!article) {
+      return NextResponse.json({ error: ErrorMessage.NOT_FOUND }, { status: StatusCode.NotFound });
+    }
+
+    const imageUrl = article.image!;
+    if (imageUrl) {
+      const publicId = imageUrl.split('/').slice(-1)[0].split('.')[0];
+      await cloudinary.v2.uploader.destroy(`articles/${publicId}`);
+    }
 
     await Article.findByIdAndDelete(id);
 
@@ -125,18 +144,18 @@ export const GET = async (req: NextRequest, { params }: ArticleDetailsProps) => 
           },
           authorImage: { $arrayElemAt: ["$writer.image", 0] },
           authorUsername: { $arrayElemAt: ["$writer.username", 0] },
-          author: { $toString: { $arrayElemAt: ["$writer._id", 0] } } 
+          author: { $toString: { $arrayElemAt: ["$writer._id", 0] } }
         }
       },
       {
         $project: {
           likes: 0,
-          writer:0
+          writer: 0
         }
       }
     ]))[0];
 
-    
+
 
     if (!article) {
       return NextResponse.json(

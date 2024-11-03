@@ -42,8 +42,6 @@ export const ImageUpload = ({ onChange, value, folder = 'default' }: ImageUpload
                 }
             );
 
-            console.log(uploadResponse);
-
             if (!uploadResponse.ok) throw new Error('Upload failed');
 
             const uploadResult = await uploadResponse.json();
