@@ -1,13 +1,13 @@
 'use client'
 
-// import { useTheme } from 'next-themes'
+import { useTheme } from 'next-themes'
 import { Button } from "@/components/ui/button"
-// import { MoonIcon, SunIcon } from "lucide-react"
+import { MoonIcon, SunIcon } from "lucide-react"
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 export default function NotFound() {
-  // const { theme, setTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -25,14 +25,14 @@ export default function NotFound() {
           <Link href="/">Go back home</Link>
         </Button>
         <div>
-          {/* <Button
+          <Button
             variant="outline"
             size="icon"
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           >
             {theme === 'dark' ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
             <span className="sr-only">Toggle theme</span>
-          </Button> */}
+          </Button>
         </div>
       </div>
       <div className="mt-12 animate-bounce">

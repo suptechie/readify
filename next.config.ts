@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
         serverActions: {
             allowedOrigins: [NEXT_PUBLIC_API_URL],
         },
+        staleTimes:{
+            dynamic:5,
+        }
     },
     images: {
         remotePatterns: [
