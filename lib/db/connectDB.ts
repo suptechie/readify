@@ -14,9 +14,6 @@ const connectDB = async (): Promise<void> => {
 
         connection.on('error', (err) => {
             console.log('MongoDB connection error: ' + err);
-            if (NODE_ENV === 'production') {
-                process.exit(1);
-            }
         });
 
         connection.on('disconnected', () => {
@@ -25,7 +22,6 @@ const connectDB = async (): Promise<void> => {
 
     } catch (error) {
         console.log(error);
-        process.exit(1);
     }
 };
 
