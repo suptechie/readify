@@ -4,7 +4,7 @@ import { memo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import dynamic from "next/dynamic";
-const AddArticleForm = dynamic(()=>import('@/components/forms/auth/AddArticleForm'),{ssr:false})
+const AddArticleForm = dynamic(()=>import('@/components/forms/AddArticleForm'),{ssr:false})
 
 const AddArticleButton = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);

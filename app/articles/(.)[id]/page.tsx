@@ -8,7 +8,7 @@ import getTokenData from "@/lib/utils/getTokenData";
 import { TokenPayload } from "@/types";
 import { ArticleDetailsProps } from "@/types/props";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { AlertDialogContent, AlertDialog, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { AlertDialogContent, AlertDialog, AlertDialogTitle, AlertDialogCancel } from "@/components/ui/alert-dialog";
 
 const ArticlePage = async ({ params }: ArticleDetailsProps) => {
   let article: IExtendedArticle | null;
@@ -27,7 +27,7 @@ const ArticlePage = async ({ params }: ArticleDetailsProps) => {
 
   return (
     <AlertDialog open>
-      <ScrollArea className=",d:w-[700px] max-w-[425px]">
+      <ScrollArea className="d:w-[700px] max-w-[425px]">
         <AlertDialogContent className="h-5/6  w-full">
         <AlertDialogTitle />
           {error ? (
@@ -40,6 +40,7 @@ const ArticlePage = async ({ params }: ArticleDetailsProps) => {
               <ArticleDetail article={article!} userId={token?.id} />
             </Suspense>
           )}
+          <AlertDialogCancel>Close</AlertDialogCancel>
         </AlertDialogContent>
       </ScrollArea>
     </AlertDialog>

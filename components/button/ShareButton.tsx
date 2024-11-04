@@ -21,24 +21,17 @@ const ShareButton = ({ id }: { id: string; }) => {
     const articleUrl = `${NEXT_PUBLIC_API_URL}/articles/${id}`;
 
     const handleShare = (option: ShareOption) => {
-        if (option.name === 'GitHub') {
+        if (option.name === 'GitHub' || option.name === 'Instagram') {
             navigator.clipboard.writeText(articleUrl);
             toast({
                 title: "Link copied!",
-                description: "You can now paste the link on GitHub.",
+                description: `You can now paste the link on ${option.name}.`,
             });
-        } else if (option.name === 'Instagram') {
-            navigator.clipboard.writeText(articleUrl);
-            toast({
-                title: "Link copied!",
-                description: "You can now paste the link on Instagram.",
-            });
-        } else {
+        }  else {
             window.open(option.shareUrl(articleUrl), '_blank');
         }
         setIsOpen(false);
     };
-
 
     const handleCopyLink = () => {
         navigator.clipboard.writeText(articleUrl);
@@ -75,7 +68,7 @@ const ShareButton = ({ id }: { id: string; }) => {
                                     "flex items-center justify-center gap-2 h-16 w-full transition-all",
                                     option.color,
                                     option.hoverColor
-                                  )}
+                                )}
                                 onClick={() => handleShare(option)}
                             >
                                 {option.icon}

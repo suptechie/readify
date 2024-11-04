@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { parseISO, format } from 'date-fns'
+import { parseISO, format } from 'date-fns';
 
 interface DateFormatterProps {
-  dateString: string
+  dateString: string;
 }
 
 export default function DateFormatter({ dateString }: DateFormatterProps) {
-  const date = parseISO(dateString)
-  return <time dateTime={dateString}>{format(date, 'LLLL d, yyyy')}</time>
+  const date = parseISO(dateString);
+  return <time dateTime={dateString}>{format(date, 'LLLL d, yyyy')}</time>;
 }

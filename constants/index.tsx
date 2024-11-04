@@ -28,9 +28,9 @@ export const GENDER = [
   { id: "male", label: "Male" },
   { id: "female", label: "Female" },
   { id: "other", label: "Other" }
-]
+];
 
-const base = '/assets/profile'
+const base = '/assets/profile';
 export const AVATARIMAGES = [
   `${base}/1.jpg`,
   `${base}/2.jpg`,
@@ -42,9 +42,7 @@ export const AVATARIMAGES = [
   `${base}/8.jpg`,
   `${base}/10.jpg`,
   `${base}/11.jpg`,
-]
-
-
+];
 
 export const shareOptions: ShareOption[] = [
   {
@@ -59,7 +57,7 @@ export const shareOptions: ShareOption[] = [
       />
     ),
     color: 'bg-[#1877F2]',
-    hoverColor: 'hover:bg-[#0E5FC1]',
+    hoverColor: 'hover:bg-[#166FE5]',
     shareUrl: (url) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
   },
   {
@@ -73,8 +71,8 @@ export const shareOptions: ShareOption[] = [
         className="h-8 w-8 font-bold"
       />
     ),
-    color: 'bg-black',
-    hoverColor: 'hover:bg-zinc-800',
+    color: 'bg-[#1DA1F2]',
+    hoverColor: 'hover:bg-[#1A91DA]',
     shareUrl: (url) => `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`,
   },
   {
@@ -89,7 +87,7 @@ export const shareOptions: ShareOption[] = [
       />
     ),
     color: 'bg-[#0A66C2]',
-    hoverColor: 'hover:bg-[#084E96]',
+    hoverColor: 'hover:bg-[#004182]',
     shareUrl: (url) => `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
   },
   {
@@ -103,7 +101,7 @@ export const shareOptions: ShareOption[] = [
         className="h-6 w-6"
       />
     ),
-    color: 'bg-gradient-to-tr from-[#FF0069] via-[#E4405F] to-[#FD1D1D]',
+    color: 'bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737]',
     hoverColor: 'hover:opacity-90',
     shareUrl: (url) => url,
   },
@@ -118,8 +116,8 @@ export const shareOptions: ShareOption[] = [
         className="h-6 w-6"
       />
     ),
-    color: 'bg-[#008000]',
-    hoverColor: 'hover:bg-[#128C7E]', 
+    color: 'bg-[#25D366]',
+    hoverColor: 'hover:bg-[#20BD5C]',
     shareUrl: (url) => `https://wa.me/?text=${encodeURIComponent(url)}`,
   },
   {
@@ -133,8 +131,8 @@ export const shareOptions: ShareOption[] = [
         className="h-6 w-6"
       />
     ),
-    color: 'bg-[#25D366]',
-    hoverColor: 'hover:bg-[#128C7E]',
-    shareUrl: (url) => url, 
+    color: 'bg-[#333333]',
+    hoverColor: 'hover:bg-[#24292F]',
+    shareUrl: (url) => url,
   }
 ];

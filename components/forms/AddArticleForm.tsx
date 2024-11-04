@@ -16,7 +16,7 @@ import { toast } from "@/hooks/use-toast";
 import { NEXT_PUBLIC_API_URL } from "@/config";
 import { ImageUpload } from "@/components/common/ImageUpload";
 import { useRouter } from "next/navigation";
-import { addArticleFormSchema } from "./form-validation";
+import { addArticleFormSchema } from "./auth/form-validation";
 
 const AddArticleForm = () => {
   const router = useRouter()

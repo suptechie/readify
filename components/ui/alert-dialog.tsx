@@ -121,10 +121,10 @@ const AlertDialogCancel = React.forwardRef<
       "mt-2 sm:mt-0",
       className
     )}
+    onClick={() => window.history.back()}
     {...props}
-    onClick={props.onClick || window.history.back}
   />
-))
+));
 AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
 
 export {
