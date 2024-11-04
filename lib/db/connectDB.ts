@@ -1,4 +1,4 @@
-import { MONGO_URI } from '@/config';
+import { MONGO_URI, NODE_ENV } from '@/config';
 import { connect, connection, connections } from 'mongoose';
 
 const connectDB = async (): Promise<void> => {
@@ -14,7 +14,7 @@ const connectDB = async (): Promise<void> => {
 
         connection.on('error', (err) => {
             console.log('MongoDB connection error: ' + err);
-            if (process.env.NODE_ENV === 'production') {
+            if (NODE_ENV === 'production') {
                 process.exit(1);
             }
         });
