@@ -1,7 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import JWTService from './lib/services/JWTService';
-
-const jwt = new JWTService();
 
 export const middleware = async (request: NextRequest) => {
     const token = request.cookies.get("token");
@@ -14,7 +11,7 @@ export const middleware = async (request: NextRequest) => {
     urlPath.includes('/api/article');
 
     if (isProtectedRoute) {
-        const isUnAuthorized = !token || !jwt.verifyToken(token.value);
+        const isUnAuthorized = !token 
 
         if (isUnAuthorized) {
             if (urlPath.includes("/api")) {
@@ -27,7 +24,7 @@ export const middleware = async (request: NextRequest) => {
         response.headers.set("Authorization", `Bearer ${token.value}`);
         return response;
     }  else {
-        if (token && jwt.verifyToken(token.value)) {
+        if (token) {
             return NextResponse.rewrite(new URL('/404', request.url));
         }
         return NextResponse.next();
