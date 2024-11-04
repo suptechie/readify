@@ -2,7 +2,7 @@ import connectDB from "@/lib/db/connectDB";
 import Article from "@/lib/db/models/Article";
 import { getTokenDetailsServer } from "@/lib/utils/getTokenData";
 import { CustomError, StatusCode } from "@/types";
-import { IExtendedArticle } from "@/types/entities";
+import { IArticle, IExtendedArticle } from "@/types/entities";
 import { NextRequest, NextResponse } from "next/server";
 import { ObjectId } from 'mongodb';
 import Like from "@/lib/db/models/Like";
@@ -19,9 +19,9 @@ export const POST = async (req: NextRequest) => {
             throw new CustomError(tokenResult.error?.message!, tokenResult.error?.code!);
         }
 
-
         const data = await req.json();
-        const article = await Article.create({ ...data, author: tokenResult.data.id });
+        const tags = data.tags.split(" ");
+        const article = await Article.create({ ...data, author: tokenResult.data.id, tags });
 
         return NextResponse.json(article);
 

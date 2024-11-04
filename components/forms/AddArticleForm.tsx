@@ -1,6 +1,6 @@
 'use client';
 
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,21 +17,24 @@ import { NEXT_PUBLIC_API_URL } from "@/config";
 import { ImageUpload } from "@/components/common/ImageUpload";
 import { useRouter } from "next/navigation";
 import { addArticleFormSchema } from "./auth/form-validation";
+import Loader from "../skeleton/Loader";
 
 const AddArticleForm = () => {
-  const router = useRouter()
+  const router = useRouter();
+  const [isSubmitting,setSubmitting] = useState(false);
   const form = useForm<z.infer<typeof addArticleFormSchema>>({
     resolver: zodResolver(addArticleFormSchema),
     defaultValues: {
       title: "",
       content: "",
       genre: '',
-      tags: [],
+      tags: "",
       image: '',
     },
   });
 
   const onSubmit = async (values: z.infer<typeof addArticleFormSchema>) => {
+    setSubmitting(true)
     try {
       if (values.image.trim() === '') {
         form.setError("image", { message: "Image is required" });
@@ -62,6 +65,8 @@ const AddArticleForm = () => {
         description: error.message || "Unknown error occurred",
         variant: "destructive"
       });
+    }finally{
+      setSubmitting(false);
     }
   };
 
@@ -107,7 +112,7 @@ const AddArticleForm = () => {
                       <SelectValue placeholder="Select a genre" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
+                  <SelectContent className="h-52">
                     {GENRES.map(({ label, id }) => (
                       <SelectItem key={id} value={id}>
                         {label}
@@ -126,13 +131,9 @@ const AddArticleForm = () => {
               <FormItem>
                 <FormLabel className="mr-4">Tags</FormLabel>
                 <FormControl>
-                  <MultiSelect
-                    options={GENRES.map(genre => ({ label: genre.label, value: genre.id }))}
-                    onValueChange={field.onChange}
-                    placeholder="Select your favorite genres"
-                  />
+                  <Input placeholder="#Mern #Javascript" {...field} />
                 </FormControl>
-                <FormDescription>Select one or more tags for your article</FormDescription>
+                <FormDescription>Add tags for your article separated by # and space.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -154,7 +155,13 @@ const AddArticleForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Add Article</Button>
+          <Button disabled={isSubmitting} type="submit">
+            {isSubmitting?(
+              <Loader /> 
+            ):(
+              "Add Article"
+            )}
+            </Button>
         </form>
       </Form>
     </ScrollArea>

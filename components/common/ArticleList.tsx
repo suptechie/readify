@@ -10,7 +10,7 @@ const ArticleList = ({ articles, userId, isHome }: ArticleListProps) => {
                 <AlertTitle>No Articles</AlertTitle>
                 <AlertDescription>
                     {isHome?(
-                        "There is no Articles Available. Start by creating your own!."
+                        "There is no Articles Available. Start by creating your own! Or Change your preferences."
                     ):(
                         `You haven't created any articles yet. Click the "Add Article" button to get started!`
                     )}

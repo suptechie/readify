@@ -22,17 +22,16 @@ export const registerFormSchema = z.object({
 });
 
 export const profileSchema = z.object({
-    name: z.string({ message: "Name is required" }).min(3,{message:"Name must the more than 3 letters"}),
+    name: z.string({ message: "Name is required" }).min(3, { message: "Name must the more than 3 letters" }),
     age: z.string({ message: "Age is required" }),
     gender: z.string().min(1, { message: "You must select your gender" }),
     bio: z.string(),
-})
+});
 
 export const addArticleFormSchema = z.object({
     title: z.string().min(1, "Title is required"),
     content: z.string().min(1, "Content is required"),
     genre: z.string().min(1, "Genre is required"),
-    tags: z.array(z.string()).min(1, "At least one tag is required"),
+    tags: z.string({ message: "At least one tag is required" }),
     image: z.string({ message: "Image is required" }),
-  });
-  
+});
