@@ -37,7 +37,7 @@ export const fetchArticles = async (url: string = '/api/article') => {
     try {
         token = await getTokenData() as TokenPayload;
         const response = await fetchWithToken(url, {
-            cache: "force-cache"
+            cache: "no-cache"
         });
         if (!response.ok) {
             const errorData = await response.json();
