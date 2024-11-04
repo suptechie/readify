@@ -1,4 +1,4 @@
-import { MONGO_URI, NODE_ENV } from '@/config';
+import { MONGO_URI } from '@/config';
 import { connect, connection, connections } from 'mongoose';
 
 const connectDB = async (): Promise<void> => {
