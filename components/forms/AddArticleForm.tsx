@@ -11,7 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { MultiSelect } from "@/components/ui/multi-select";
 import { toast } from "@/hooks/use-toast";
 import { NEXT_PUBLIC_API_URL } from "@/config";
 import { ImageUpload } from "@/components/common/ImageUpload";

@@ -13,7 +13,24 @@ export const GET = async (req: NextRequest) => {
         const tokenResult = await getTokenDetailsServer(req);
         const isUserAuthenticated: boolean = tokenResult.success || !!tokenResult.data;
 
-        let articles = await Article.aggregate([
+        const { searchParams } = new URL(req.url);
+        const page = Math.max(1, +(searchParams.get("page") || "1"));
+        const limit = +(searchParams.get("limit") || "6");
+        const skip = (page - 1) * limit;
+
+        let query = {};
+        
+        if (isUserAuthenticated) {
+            const user = await User.findById(tokenResult.data?.id).lean();
+            if (user?.preferences?.length) {
+                query = { genre: { $in: user.preferences } };
+            }
+        }
+
+        const totalCount = await Article.countDocuments(query);
+
+        const articles = await Article.aggregate([
+            { $match: query },
             {
                 $lookup: {
                     from: "likes",
@@ -38,23 +55,16 @@ export const GET = async (req: NextRequest) => {
                 $project: {
                     likes: 0
                 }
-            }
+            },
+            { $skip: skip },
+            { $limit: limit }
         ]) as IExtendedArticle[];
 
-        if (isUserAuthenticated) {
-            const user = await User.findById(tokenResult.data?.id).lean();
-            
-            if (user?.preferences?.length) {
-                articles = articles.filter(article => 
-                    article.genre && user.preferences!.includes(article.genre)
-                );
-            }
-        }
-
-        return NextResponse.json({ 
+        return NextResponse.json({
             success: true,
             articles,
-            totalCount: articles.length
+            currentPage: page,
+            totalPages: Math.ceil(totalCount / limit)
         });
 
     } catch (error) {

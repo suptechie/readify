@@ -17,7 +17,7 @@ export type ArticleDetailsProps = {
 export type ArticleListProps = {
     articles: IExtendedArticle[];
     userId?: string;
-    isHome?:boolean;
+    isHome?: boolean;
 };
 
 export type ArticleCardProps = {
@@ -30,4 +30,15 @@ export type LikeButtonProps = {
     likesCount: number;
     userIds: string[];
     userId: string;
+};
+
+export type HomePageProps = {
+    searchParams: Promise<{ page?: string; }>;
+};
+
+export type PaginatedListProps = {
+    articles: IExtendedArticle[];
+    userId: string;
+    page: number;
+    totalPages: number;
 };

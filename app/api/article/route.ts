@@ -2,7 +2,7 @@ import connectDB from "@/lib/db/connectDB";
 import Article from "@/lib/db/models/Article";
 import { getTokenDetailsServer } from "@/lib/utils/getTokenData";
 import { CustomError, StatusCode } from "@/types";
-import { IArticle, IExtendedArticle } from "@/types/entities";
+import { IExtendedArticle } from "@/types/entities";
 import { NextRequest, NextResponse } from "next/server";
 import { ObjectId } from 'mongodb';
 import Like from "@/lib/db/models/Like";
