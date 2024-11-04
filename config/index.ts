@@ -1,4 +1,4 @@
-export const MONGO_URI = process.env.MONGO_URI as string;
+export const MONGO_URI = process.env.MONGO_URI ?? "mongodb://localhost:27017/Readify";
 export const NODE_ENV = process.env.NODE_ENV as string;
 export const TOKEN_SECRET = process.env.TOKEN_SECRET as string;
 export const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL ?? "https://readify-gamma.vercel.app";
