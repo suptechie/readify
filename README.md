@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/54df6526-9f71-4bcf-abe0-35f2e77d0e87)<h1 align="center">📖 Readify</h1>
+<h1 align="center">📖 Readify</h1>
 <p align="center">Discover, read, and manage your favorite articles effortlessly. Post anonymously, customize your feed, and explore what interests you.</p>
 <p align="center"><a href="http://readify-gamma.vercel.app" target="_blank">Visit Readify</a></p>
 
@@ -81,10 +81,19 @@ Readify is a seamless reading experience platform powered by the latest in web t
 
 ## 📷 Screenshots
 
-| Light Theme                            | Dark Theme                            |
-| -------------------------------------- | ------------------------------------- |
-| ![Light Theme](![image](https://github.com/user-attachments/assets/f81df7fc-16c6-4f3d-81a8-38b6a993b924)
-) | ![Dark Theme](![image](https://github.com/user-attachments/assets/4e911b13-78a7-473a-9879-9834e6013599)
-) |
+<table align="center">
+    <tr>
+        <td align="center"><strong>Light Theme</strong></td>
+        <td align="center"><strong>Dark Theme</strong></td>
+    </tr>
+    <tr>
+        <td align="center">
+            <img src="https://github.com/user-attachments/assets/f81df7fc-16c6-4f3d-81a8-38b6a993b924" alt="Light Theme" width="400px" />
+        </td>
+        <td align="center">
+            <img src="https://github.com/user-attachments/assets/4e911b13-78a7-473a-9879-9834e6013599" alt="Dark Theme" width="400px" />
+        </td>
+    </tr>
+</table>
 
 ---
