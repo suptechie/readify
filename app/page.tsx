@@ -1,11 +1,9 @@
 import PaginatedList from "@/components/common/PaginatedList";
-import { HomePageProps } from "@/types/props";
+import SearchBar from "@/components/common/SearchBar";
 
-export const experimental_ppr = true
+export const experimental_ppr = true;
 
-export default async function HomePage({ searchParams }: HomePageProps) {
-  const page = Math.max(1, +((await searchParams).page || "1"));
-  const limit = 6;
+export default async function HomePage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -16,10 +14,11 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         </p>
       </header>
 
-        <PaginatedList
-          page={page}
-          limit={limit}
-        />
+      <div className="flex justify-center items-center mb-6">
+        <SearchBar />
+      </div>
+
+      <PaginatedList />
 
       <footer className="mt-12 text-center text-sm text-muted-foreground">
         <p>&copy; {new Date().getFullYear()} Readify. All rights reserved.</p>

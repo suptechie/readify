@@ -2,12 +2,13 @@ import { memo } from "react";
 import { Metadata } from "next";
 import { RootLayoutProps } from "@/types/props";
 import { ThemeProvider } from "@/components/provider/ThemeProvider";
+import QueryProvider from "@/components/provider/QueryProvider";
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import "../styles/globals.css";
 import Header from "@/components/layout/Header";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
-import QueryProvider from "@/components/provider/QueryProvider";
 
 const inter = Plus_Jakarta_Sans({
   subsets: ["vietnamese"],
@@ -18,7 +19,7 @@ const inter = Plus_Jakarta_Sans({
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="en" suppressHydrationWarning>
-       <head>
+      <head>
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/favicon.png" />
@@ -27,16 +28,18 @@ const RootLayout = ({ children }: RootLayoutProps) => {
         className={cn('remove-scrollbar min-h-[600px] antialiased', inter.className)}
       >
         <QueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Header />
-            {children}
-            <Toaster />
-          </ThemeProvider>
+          <NuqsAdapter>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Header />
+              {children}
+              <Toaster />
+            </ThemeProvider>
+          </NuqsAdapter>
         </QueryProvider>
       </body>
     </html>

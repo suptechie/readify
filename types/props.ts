@@ -33,7 +33,7 @@ export type LikeButtonProps = {
 };
 
 export type HomePageProps = {
-    searchParams: Promise<{ page?: string; }>;
+    searchParams: Promise<{ page?: string; search:string }>;
 };
 
 export type PaginatedListProps = {

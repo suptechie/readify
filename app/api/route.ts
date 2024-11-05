@@ -5,35 +5,50 @@ import catchError from "@/lib/utils/catchError";
 import { getTokenDetailsServer } from "@/lib/utils/getTokenData";
 import { IExtendedArticle } from "@/types/entities";
 import { NextRequest, NextResponse } from "next/server";
+import { PipelineStage } from "mongoose";
 
 connectDB();
 
 export const GET = async (req: NextRequest) => {
     try {
-        console.log('req', req.url);
-        
         const tokenResult = await getTokenDetailsServer(req);
         const isUserAuthenticated: boolean = tokenResult.success || !!tokenResult.data;
-
 
         const { searchParams } = new URL(req.url);
         const page = Math.max(1, +(searchParams.get("page") || "1"));
         const limit = +(searchParams.get("limit") || "6");
         const skip = (page - 1) * limit;
 
-        let query = {};
-        
-        if (isUserAuthenticated) {
+        const search = searchParams.get("search");
+        //eslint-disable-next-line
+        let query: any = {};
+
+        if (search) {
+            const searchRegex = new RegExp(search.trim(), 'i');
+            query = {
+                $or: [
+                    { title: { $regex: searchRegex } },
+                    { tags: { $regex: searchRegex } }
+                ]
+            };
+        }
+
+        if (isUserAuthenticated && !search) {
             const user = await User.findById(tokenResult.data?.id).lean();
             if (user?.preferences?.length) {
-                query = { genre: { $in: user.preferences } };
+                query = {
+                    ...query,
+                    genre: { $in: user.preferences }
+                };
             }
         }
 
         const totalCount = await Article.countDocuments(query);
 
-        const articles = await Article.aggregate([
-            { $match: query },
+        const pipeline: PipelineStage[] = [
+            { 
+                $match: query 
+            },
             {
                 $lookup: {
                     from: "likes",
@@ -53,15 +68,84 @@ export const GET = async (req: NextRequest) => {
                         }
                     }
                 }
-            },
+            }
+        ];
+
+        if (search) {
+            pipeline.push({
+                $addFields: {
+                    searchScore: {
+                        $add: [
+                            {
+                                $cond: {
+                                    if: { 
+                                        $regexMatch: { 
+                                            input: "$title", 
+                                            regex: search, 
+                                            options: "i" 
+                                        } 
+                                    },
+                                    then: 2,
+                                    else: 0
+                                }
+                            },
+                            {
+                                $cond: {
+                                    if: {
+                                        $gt: [{
+                                            $size: {
+                                                $filter: {
+                                                    input: "$tags",
+                                                    cond: { 
+                                                        $regexMatch: { 
+                                                            input: "$$this", 
+                                                            regex: search, 
+                                                            options: "i" 
+                                                        } 
+                                                    }
+                                                }
+                                            }
+                                        }, 0]
+                                    },
+                                    then: 1,
+                                    else: 0
+                                }
+                            }
+                        ]
+                    }
+                }
+            });
+
+            pipeline.push({ 
+                $sort: { 
+                    searchScore: -1 
+                } 
+            });
+        }
+
+        pipeline.push(
             {
                 $project: {
-                    likes: 0
+                    _id: 1,
+                    title: 1,
+                    description: 1,
+                    content: 1,
+                    tags: 1,
+                    genre: 1,
+                    image:1,
+                    author: 1,
+                    createdAt: 1,
+                    updatedAt: 1,
+                    likeCount: 1,
+                    userIds: 1,
+                     
                 }
             },
             { $skip: skip },
             { $limit: limit }
-        ]) as IExtendedArticle[];
+        );
+
+        const articles = await Article.aggregate(pipeline) as IExtendedArticle[];
 
         return NextResponse.json({
             success: true,

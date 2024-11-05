@@ -9,42 +9,45 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from '../ui/pagination';
-import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { IExtendedArticle } from '@/types/entities';
 import { fetchData } from '@/lib/fetch/fetchArticles';
 import PaginationItems from './PaginationItems';
-import ArticleListSkeleton from '@/components/skeleton/ArticleListSkeleton'
+import ArticleListSkeleton from '@/components/skeleton/ArticleListSkeleton';
+import { parseAsInteger, useQueryStates, parseAsString } from 'nuqs';
 
-type Props = {
-    limit: number;
-    page: number;
-};
+const PaginatedList = () => {
+    const limit = 6;
+    const [userId, setUserId] = useState<string | undefined>(undefined);
 
-const PaginatedList = ({ limit, page }: Props) => {
-    const { data, isLoading, error, refetch } = useQuery<{ articles: IExtendedArticle[]; totalPages: number; }>({
-        queryKey: ['home-articles', page, limit],
-        queryFn: async () => await fetchData(page, limit),
+    const [{ page, search }, setParams] = useQueryStates({
+        page: parseAsInteger.withDefault(1),
+        search: parseAsString.withDefault("")
+    }, {
+        urlKeys: {
+            page: "page",
+            search: "search"
+        }
+    });
+
+    const { data, isLoading, error } = useQuery<{ articles: IExtendedArticle[]; totalPages: number; }>({
+        queryKey: ['home-articles', page, limit, search],
+        queryFn: async () => await fetchData(+page!, limit, search!),
         retry: 1,
         refetchInterval: 1000 * 60,
         staleTime: 1000 * 2,
     });
-    const router = useRouter();
-    const [userId, setUserId] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         setUserId(localStorage.getItem('userId') || undefined);
     }, []);
 
     const handlePageChange = (newPage: number) => {
-        router.push(`/?page=${newPage}`);
-        refetch()
+        setParams({ page: newPage });
     };
 
     if (isLoading) {
-        return (
-            <ArticleListSkeleton isPagination={true} itemCount={limit} />
-        )
+        return <ArticleListSkeleton isPagination={true} itemCount={limit} />;
     }
 
     if (error) {
@@ -66,7 +69,11 @@ const PaginatedList = ({ limit, page }: Props) => {
                                 />
                             </PaginationItem>
 
-                            <PaginationItems totalPages={data.totalPages} currentPage={page} onPageChange={handlePageChange} />
+                            <PaginationItems
+                                totalPages={data.totalPages}
+                                currentPage={page}
+                                onPageChange={handlePageChange}
+                            />
 
                             <PaginationItem>
                                 <PaginationNext
