@@ -93,7 +93,7 @@ const ShareButton = ({ id }: { id: string }) => {
             {option.icon}
             <span className="font-medium">{option.name}</span>
         </Button>
-    )),[])
+    )),[handleShare])
 
     const handleCopyLink = () => {
         navigator.clipboard.writeText(articleUrl);
