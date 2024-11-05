@@ -1,10 +1,11 @@
 import PaginatedList from "@/components/common/PaginatedList";
 import SearchBar from "@/components/common/SearchBar";
+import ArticleListSkeleton from "@/components/skeleton/ArticleListSkeleton";
+import { Suspense } from "react";
 
 export const experimental_ppr = true;
 
 export default async function HomePage() {
-
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="mb-8">
@@ -14,11 +15,12 @@ export default async function HomePage() {
         </p>
       </header>
 
-      <div className="flex justify-center items-center mb-6">
-        <SearchBar />
-      </div>
-
-      <PaginatedList />
+      <Suspense fallback={<ArticleListSkeleton isPagination itemCount={6} />}>
+        <div className="flex justify-center items-center mb-6">
+          <SearchBar />
+        </div>
+        <PaginatedList />
+      </Suspense>
 
       <footer className="mt-12 text-center text-sm text-muted-foreground">
         <p>&copy; {new Date().getFullYear()} Readify. All rights reserved.</p>

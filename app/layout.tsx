@@ -49,6 +49,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 export default memo(RootLayout);
 
 export const metadata: Metadata = {
+  metadataBase:new URL("http://readify-gamma.vercel.app"),
   title: "Readify - Your Personal Article Library",
   description: "Discover, bookmark, and manage your favorite articles. Get personalized recommendations based on your interests and engage with a community of readers.",
   applicationName: "Readify",
