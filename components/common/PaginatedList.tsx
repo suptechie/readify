@@ -21,7 +21,7 @@ type Props = {
 };
 
 const PaginatedList = ({ limit, page }: Props) => {
-    const { data, isLoading, error } = useQuery<{ articles: IExtendedArticle[]; totalPages: number; }>({
+    const { data, isLoading, error, refetch } = useQuery<{ articles: IExtendedArticle[]; totalPages: number; }>({
         queryKey: ['home-articles', page, limit],
         queryFn: async () => await fetchData(page, limit),
         retry: 1,
@@ -37,6 +37,7 @@ const PaginatedList = ({ limit, page }: Props) => {
 
     const handlePageChange = (newPage: number) => {
         router.push(`/?page=${newPage}`);
+        refetch()
     };
 
     if (isLoading) {

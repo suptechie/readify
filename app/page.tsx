@@ -4,6 +4,8 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import { cookies } from "next/headers";
 import { fetchData } from "../lib/fetch/fetchArticles";
 
+export const dynamic = 'force-dynamic'
+export const experimental_ppr = true
 
 export default async function HomePage({ searchParams }: HomePageProps) {
   const page = Math.max(1, +((await searchParams).page || "1"));
