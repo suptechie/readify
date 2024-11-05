@@ -1,6 +1,6 @@
 'use client';
 
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,12 +16,12 @@ import { NEXT_PUBLIC_API_URL } from "@/config";
 
 const ArticleCard = ({ article, userId }: ArticleCardProps) => {
 
-  const handleReport = () => {
+  const handleReport = useCallback(() => {
     toast({
       title: "Article reported",
       description: "Thank you for your feedback. We'll review this article.",
     });
-  };
+  },[]);
 
   const displayedTags = article.tags!.slice(0, 1);
   const remainingTagsCount = article.tags!.length - 1;

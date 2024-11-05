@@ -1,11 +1,11 @@
 import PaginatedList from "@/components/common/PaginatedList";
 import SearchBar from "@/components/common/SearchBar";
 import ArticleListSkeleton from "@/components/skeleton/ArticleListSkeleton";
-import { Suspense } from "react";
+import { memo, Suspense } from "react";
 
 export const experimental_ppr = true;
 
-export default async function HomePage() {
+const HomePage = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="mb-8">
@@ -29,3 +29,6 @@ export default async function HomePage() {
   );
 };
 
+
+
+export default memo(HomePage);

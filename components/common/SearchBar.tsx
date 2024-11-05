@@ -1,27 +1,26 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useCallback } from 'react';
+import { ChangeEvent, FormEvent, memo, useCallback } from 'react';
 import { parseAsInteger, parseAsString, useQueryStates } from 'nuqs';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { useDebouncedCallback } from 'use-debounce';
 
-export default function SearchBar() {
+const SearchBar = ()=> {
   const [{ search }, setSearch] = useQueryStates({
-
     page: parseAsInteger.withDefault(1),
     search: parseAsString.withDefault("")
-}, {
+  }, {
     urlKeys: {
-        page: "page",
-        search: "search"
+      page: "page",
+      search: "search"
     }
-});
+  });
 
   const debouncedSetSearch = useDebouncedCallback(
     (value: string) => {
-      setSearch({search:value, page:1});
+      setSearch({ search: value, page: 1 });
     },
     500
   );
@@ -30,7 +29,7 @@ export default function SearchBar() {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const searchValue = formData.get('search') as string;
-    setSearch({search:searchValue, page:1});
+    setSearch({ search: searchValue, page: 1 });
   }, [setSearch]);
 
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -59,3 +58,5 @@ export default function SearchBar() {
     </form>
   );
 }
+
+export default memo(SearchBar);

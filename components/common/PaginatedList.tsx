@@ -1,6 +1,6 @@
 'use client';
 
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import ArticleList from './ArticleList';
 import {
     Pagination,
@@ -42,9 +42,9 @@ const PaginatedList = () => {
         setUserId(localStorage.getItem('userId') || undefined);
     }, []);
 
-    const handlePageChange = (newPage: number) => {
+    const handlePageChange = useCallback((newPage: number) => {
         setParams({ page: newPage });
-    };
+    }, [setParams]);
 
     if (isLoading) {
         return <ArticleListSkeleton isPagination={true} itemCount={limit} />;

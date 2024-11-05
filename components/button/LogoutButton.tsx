@@ -13,7 +13,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
-import { memo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -22,7 +22,7 @@ const ConfirmLogoutModel = () => {
     const [isOpen, setOpen] = useState(false);
     const router = useRouter();
 
-    const handleLogout = async () => {
+    const handleLogout = useCallback(async () => {
         setOpen(false);
         await logout();
         toast({
@@ -31,7 +31,7 @@ const ConfirmLogoutModel = () => {
             variant: "warning",
         });
         router.refresh();
-    };
+    },[router]);
 
     return (
         <AlertDialog open={isOpen} onOpenChange={setOpen}>

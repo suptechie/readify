@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ImageIcon, X } from 'lucide-react';
 import Image from 'next/image';
@@ -62,10 +62,10 @@ export const ImageUpload = ({ onChange, value, folder = 'default' }: ImageUpload
         }
     };
 
-    const handleRemove = () => {
+    const handleRemove = useCallback(() => {
         setImageUrl('');
         onChange('');
-    };
+    },[onChange]);
 
     return (
         <div className="space-y-4">

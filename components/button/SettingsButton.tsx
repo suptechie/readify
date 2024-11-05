@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTheme } from "next-themes";
 import { Settings, Sun, Moon, Monitor } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
@@ -23,13 +23,13 @@ const SettingsButton = () => {
     const [isOpen, setOpen] = useState(false);
     const { theme, setTheme } = useTheme();
 
-    const handleThemeChange = (value: string) => {
+    const handleThemeChange = useCallback((value: string) => {
         setTheme(value);
         toast({
             title: "Theme updated",
             description: `Theme changed to ${value} mode`,
         });
-    };
+    },[setTheme]);
 
     return (
         <AlertDialog open={isOpen} onOpenChange={setOpen}>

@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '../ui/button';
 import { Heart } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
@@ -16,14 +16,14 @@ const LikeButton = ({ likesCount: initialLikesCount, userIds, id, userId }: Like
     const query = useQueryClient();
 
     useEffect(() => {
-        authRef.current =  typeof userId === 'undefined' || userId === null;
-        
+        authRef.current = typeof userId === 'undefined' || userId === null;
+
         if (userIds.includes(userId)) {
             setIsLiked(true);
         }
-    }, [userIds,userId]);
+    }, [userIds, userId]);
 
-    const handleLike = async () => {
+    const handleLike = useCallback(async () => {
         if (isLoading) return;
 
         if (authRef.current) {
@@ -47,9 +47,9 @@ const LikeButton = ({ likesCount: initialLikesCount, userIds, id, userId }: Like
             setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
 
             query.invalidateQueries({
-                queryKey:["home-articles"],
-                exact:false
-            })
+                queryKey: ["home-articles"],
+                exact: false
+            });
 
             const response = await fetch('/api/article', {
                 method: "PATCH",
@@ -73,7 +73,7 @@ const LikeButton = ({ likesCount: initialLikesCount, userIds, id, userId }: Like
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [query, id, isLiked, isLoading,]);
 
     return (
         <Button
@@ -96,4 +96,4 @@ const LikeButton = ({ likesCount: initialLikesCount, userIds, id, userId }: Like
     );
 };
 
-export default LikeButton;
+export default memo(LikeButton);

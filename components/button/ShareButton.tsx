@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useMemo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Share2, Link2 } from 'lucide-react';
@@ -94,14 +94,14 @@ const ShareButton = ({ id }: { id: string; }) => {
         </Button>
     )), [handleShare]);
 
-    const handleCopyLink = () => {
+    const handleCopyLink =useCallback( () => {
         navigator.clipboard.writeText(articleUrl);
         toast({
             title: "Link copied!",
             description: "The article link has been copied to your clipboard.",
         });
         setIsOpen(false);
-    };
+    },[articleUrl]);
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -145,4 +145,4 @@ const ShareButton = ({ id }: { id: string; }) => {
     );
 };
 
-export default ShareButton;
+export default memo(ShareButton);

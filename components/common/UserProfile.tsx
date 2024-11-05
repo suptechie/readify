@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from "@/components/ui/input";
@@ -27,7 +27,7 @@ import { ErrorMessage } from '@/types';
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
-export default function Component({ user }: { user: IUser; }) {
+const UserProfile = ({ user }: { user: IUser; }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const form = useForm<ProfileFormValues>({
@@ -40,7 +40,7 @@ export default function Component({ user }: { user: IUser; }) {
     },
   });
 
-  const onSubmit = async (values: ProfileFormValues) => {
+  const onSubmit = useCallback(async (values: ProfileFormValues) => {
     try {
       const response = await fetch("/api/user", {
         method: "PUT",
@@ -56,20 +56,20 @@ export default function Component({ user }: { user: IUser; }) {
 
       toast({
         title: "Profile Information Updated",
-        variant:"success"
+        variant: "success"
       });
 
-      setIsEditing(false)
+      setIsEditing(false);
 
       //eslint-disable-next-line
-    } catch (error: any) {      
+    } catch (error: any) {
       toast({
         title: "Error while updating",
         description: error.message || ErrorMessage.ERROR_DEFAULT,
         variant: "destructive"
       });
     }
-  };
+  }, [user._id]);
 
   return (
     <Form {...form}>
@@ -218,4 +218,6 @@ export default function Component({ user }: { user: IUser; }) {
       </form>
     </Form>
   );
-}
+};
+
+export default memo(UserProfile);

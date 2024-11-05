@@ -14,6 +14,7 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { IExtendedArticle } from "@/types/entities";
 import { toast } from "@/hooks/use-toast";
+import { memo } from "react";
 
 type Props = {
     article: IExtendedArticle;
@@ -89,4 +90,4 @@ const ArticleActions = ({ article }: Props) => {
     );
 };
 
-export default ArticleActions;
+export default memo(ArticleActions);
