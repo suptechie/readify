@@ -15,11 +15,14 @@ const inter = Plus_Jakarta_Sans({
   variable: "--font-sans",
 });
 
-
-
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="en" suppressHydrationWarning>
+       <head>
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
+      </head>
       <body
         className={cn('remove-scrollbar min-h-[600px] antialiased', inter.className)}
       >
@@ -46,7 +49,7 @@ export const metadata: Metadata = {
   title: "Readify - Your Personal Article Library",
   description: "Discover, bookmark, and manage your favorite articles. Get personalized recommendations based on your interests and engage with a community of readers.",
   applicationName: "Readify",
-  authors: [{ name: "sinanptm", url: "https://github.com/sinanptm" }],
+  authors: [{ name: "sinanptm", url: "https://sinanptm.vercel.app" }],
   generator: "Next.js",
   keywords: [
     "article library",
