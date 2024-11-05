@@ -14,6 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 import { IExtendedArticle } from '@/types/entities';
 import { fetchData } from '@/lib/fetch/fetchArticles';
 import PaginationItems from './PaginationItems';
+import ArticleListSkeleton from '@/components/skeleton/ArticleListSkeleton'
 
 type Props = {
     limit: number;
@@ -41,7 +42,9 @@ const PaginatedList = ({ limit, page }: Props) => {
     };
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return (
+            <ArticleListSkeleton isPagination={true} itemCount={limit} />
+        )
     }
 
     if (error) {
