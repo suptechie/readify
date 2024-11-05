@@ -2,8 +2,8 @@ import { memo, Suspense } from "react";
 import AddArticleButton from "@/components/button/AddArticleButton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { fetchArticles } from "@/lib/fetch/fetchWithToken";
-import Loader from "@/components/skeleton/Loader";
 import ArticleList from "@/components/common/ArticleList";
+import ArticleListSkeleton from "@/components/skeleton/ArticleListSkeleton";
 
 
 const ArticlePage = async () => {
@@ -22,7 +22,7 @@ const ArticlePage = async () => {
           <AlertDescription>{error.message}</AlertDescription>
         </Alert>
       ) : (
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<ArticleListSkeleton isPagination={false} itemCount={6} />}>
           <ArticleList articles={articles} userId={token?.id} />
         </Suspense>
       )}

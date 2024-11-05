@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Share2, Link2 } from 'lucide-react';
@@ -65,7 +65,7 @@ const ShareButton = ({ id }: { id: string; }) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const articleUrl = `${NEXT_PUBLIC_API_URL}/articles/${id}`;
 
-    const handleShare = (option: ShareOption) => {
+    const handleShare = useCallback((option: ShareOption) => {
         if (option.name === 'GitHub' || option.name === 'Instagram') {
             navigator.clipboard.writeText(articleUrl);
             toast({
@@ -76,7 +76,7 @@ const ShareButton = ({ id }: { id: string; }) => {
             window.open(option.shareUrl(articleUrl), '_blank');
         }
         setIsOpen(false);
-    };
+    },[articleUrl]);
 
     const MappedIcons = useMemo(() => shareOptions.map((option) => (
         <Button
