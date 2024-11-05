@@ -21,15 +21,15 @@ type Props = {
 };
 
 const PaginatedList = ({ limit, page }: Props) => {
-    const router = useRouter();
-    const [userId, setUserId] = useState<string | undefined>(undefined);
     const { data, isLoading, error } = useQuery<{ articles: IExtendedArticle[]; totalPages: number; }>({
         queryKey: ['home-articles', page, limit],
-        queryFn:async () =>await fetchData(page, limit, ''),
+        queryFn: async () => await fetchData(page, limit),
         retry: 1,
-        refetchInterval: 1000 * 60, // Increase interval to 1 minute
-        staleTime: 1000 * 30, // Set stale time to 30 second
-    });    
+        refetchInterval: 1000 * 60,
+        staleTime: 1000 * 2,
+    });
+    const router = useRouter();
+    const [userId, setUserId] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         setUserId(localStorage.getItem('userId') || undefined);

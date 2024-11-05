@@ -6,12 +6,14 @@ import { toast } from '@/hooks/use-toast';
 import { ErrorMessage } from '@/types';
 import Link from 'next/link';
 import { LikeButtonProps } from '@/types/props';
+import { useQueryClient } from '@tanstack/react-query';
 
 const LikeButton = ({ likesCount: initialLikesCount, userIds, id, userId }: LikeButtonProps) => {
     const [isLiked, setIsLiked] = useState(false);
     const [likesCount, setLikesCount] = useState(initialLikesCount);
     const [isLoading, setIsLoading] = useState(false);
-    const authRef = useRef(false)
+    const authRef = useRef(false);
+    const query = useQueryClient();
 
     useEffect(() => {
         authRef.current =  typeof userId === 'undefined' || userId === null;
@@ -43,6 +45,11 @@ const LikeButton = ({ likesCount: initialLikesCount, userIds, id, userId }: Like
             setIsLoading(true);
             setIsLiked(prevIsLiked => !prevIsLiked);
             setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
+
+            query.invalidateQueries({
+                queryKey:["home-articles"],
+                exact:false
+            })
 
             const response = await fetch('/api/article', {
                 method: "PATCH",

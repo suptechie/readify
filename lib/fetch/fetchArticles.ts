@@ -4,14 +4,18 @@ import { IExtendedArticle } from "@/types/entities";
 export const fetchData = async (
   page: number, 
   limit: number, 
-  token: string
+  token?: string
 ): Promise<{ articles: IExtendedArticle[]; totalPages: number; }> => {
     try {
         const apiUrl = `${NEXT_PUBLIC_API_URL}/api?page=${page}&limit=${limit}`;
+        
+        const headers: HeadersInit = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+
         const response = await fetch(apiUrl, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
+            headers,
             cache: "no-cache"
         });
 
