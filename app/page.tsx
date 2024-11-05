@@ -1,16 +1,22 @@
-import { Suspense } from "react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { fetchArticles } from "@/lib/fetch/fetchWithToken";
-import Loader from "@/components/skeleton/Loader";
 import PaginatedList from "@/components/common/PaginatedList";
 import { HomePageProps } from "@/types/props";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { cookies } from "next/headers";
+import { fetchData } from "../lib/fetch/fetchArticles";
+
 
 export default async function HomePage({ searchParams }: HomePageProps) {
   const page = Math.max(1, +((await searchParams).page || "1"));
+  const token = (await cookies()).get("token");
   const limit = 6;
-  const { articles, error, token, totalPages } = await fetchArticles(
-    `/api?page=${page}&limit=${limit}`
-  );
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["home-articles", page, limit],
+    queryFn: async () => await fetchData(page, limit, token?.value!),
+    retry: 1
+  });
+
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -21,21 +27,12 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         </p>
       </header>
 
-      {error ? (
-        <Alert variant="destructive">
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error.message}</AlertDescription>
-        </Alert>
-      ) : (
-        <Suspense fallback={<Loader />}>
-          <PaginatedList
-            articles={articles!}
-            userId={token?.id!}
-            page={page}
-            totalPages={totalPages!}
-          />
-        </Suspense>
-      )}
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <PaginatedList
+          page={page}
+          limit={limit}
+        />
+      </HydrationBoundary>
 
       <footer className="mt-12 text-center text-sm text-muted-foreground">
         <p>&copy; {new Date().getFullYear()} Readify. All rights reserved.</p>

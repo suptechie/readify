@@ -14,9 +14,13 @@ import getTokenData from "@/lib/utils/getTokenData";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { memo } from "react";
 import SettingsButton from "../button/SettingsButton";
+import { cookies } from "next/headers";
+import StorageSetter from "../button/StorageSetter";
 
 const Header = async () => {
   const userData = await getTokenData();
+  const token = (await cookies()).get("token")?.value;
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="pl-4 pr-3">
@@ -86,6 +90,7 @@ const Header = async () => {
           </div>
         </div>
       </div>
+      <StorageSetter userId={userData?.id!} token={token!} />
     </header>
   );
 };

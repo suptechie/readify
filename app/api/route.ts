@@ -10,8 +10,11 @@ connectDB();
 
 export const GET = async (req: NextRequest) => {
     try {
+        console.log('req', req.url);
+        
         const tokenResult = await getTokenDetailsServer(req);
         const isUserAuthenticated: boolean = tokenResult.success || !!tokenResult.data;
+
 
         const { searchParams } = new URL(req.url);
         const page = Math.max(1, +(searchParams.get("page") || "1"));

@@ -38,7 +38,6 @@ export type HomePageProps = {
 
 export type PaginatedListProps = {
     articles: IExtendedArticle[];
-    userId: string;
     page: number;
     totalPages: number;
 };

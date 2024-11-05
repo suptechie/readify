@@ -7,6 +7,7 @@ import "../styles/globals.css";
 import Header from "@/components/layout/Header";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
+import QueryProvider from "@/components/provider/QueryProvider";
 
 const inter = Plus_Jakarta_Sans({
   subsets: ["vietnamese"],
@@ -14,11 +15,38 @@ const inter = Plus_Jakarta_Sans({
   variable: "--font-sans",
 });
 
+
+
+const RootLayout = ({ children }: RootLayoutProps) => {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn('remove-scrollbar min-h-[600px] antialiased', inter.className)}
+      >
+        <QueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header />
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </QueryProvider>
+      </body>
+    </html>
+  );
+};
+
+export default memo(RootLayout);
+
 export const metadata: Metadata = {
   title: "Readify - Your Personal Article Library",
   description: "Discover, bookmark, and manage your favorite articles. Get personalized recommendations based on your interests and engage with a community of readers.",
   applicationName: "Readify",
-  authors: [{ name: "sinanptm" , url:"https://github.com/sinanptm"}],
+  authors: [{ name: "sinanptm", url: "https://github.com/sinanptm" }],
   generator: "Next.js",
   keywords: [
     "article library",
@@ -72,25 +100,3 @@ export const metadata: Metadata = {
 };
 
 
-const RootLayout = ({ children }: RootLayoutProps) => {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn('remove-scrollbar min-h-[600px] antialiased', inter.className)}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Header />
-          {children}
-          <Toaster />
-        </ThemeProvider>
-      </body>
-    </html>
-  );
-};
-
-export default memo(RootLayout);

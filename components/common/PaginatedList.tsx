@@ -1,91 +1,57 @@
 'use client';
-import React from 'react';
+
+import React, { memo, useEffect, useState } from 'react';
 import ArticleList from './ArticleList';
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
-  PaginationPrevious,
-  PaginationEllipsis, 
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationNext,
+    PaginationPrevious,
 } from '../ui/pagination';
 import { useRouter } from 'next/navigation';
-import { PaginatedListProps } from '@/types/props';
+import { useQuery } from '@tanstack/react-query';
+import { IExtendedArticle } from '@/types/entities';
+import { fetchData } from '@/lib/fetch/fetchArticles';
+import PaginationItems from './PaginationItems';
 
-const PaginatedList = ({ articles, userId, page, totalPages }: PaginatedListProps) => {
+type Props = {
+    limit: number;
+    page: number;
+};
+
+const PaginatedList = ({ limit, page }: Props) => {
     const router = useRouter();
+    const [userId, setUserId] = useState<string | undefined>(undefined);
+    const { data, isLoading, error } = useQuery<{ articles: IExtendedArticle[]; totalPages: number; }>({
+        queryKey: ['home-articles', page, limit],
+        queryFn:async () =>await fetchData(page, limit, ''),
+        retry: 1,
+        refetchInterval: 1000 * 60, // Increase interval to 1 minute
+        staleTime: 1000 * 30, // Set stale time to 30 second
+    });    
+
+    useEffect(() => {
+        setUserId(localStorage.getItem('userId') || undefined);
+    }, []);
 
     const handlePageChange = (newPage: number) => {
         router.push(`/?page=${newPage}`);
     };
 
-    const renderPaginationItems = () => {
-        const items = [];
-        const showEllipsisStart = page > 3;
-        const showEllipsisEnd = page < totalPages - 2;
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
-        items.push(
-            <PaginationItem key={1}>
-                <PaginationLink
-                    onClick={() => handlePageChange(1)}
-                    isActive={1 === page}
-                >
-                    1
-                </PaginationLink>
-            </PaginationItem>
-        );
-
-        if (showEllipsisStart) {
-            items.push(
-                <PaginationItem key="ellipsis-start">
-                    <PaginationEllipsis />
-                </PaginationItem>
-            );
-        }
-
-        for (let i = Math.max(2, page - 1); i <= Math.min(totalPages - 1, page + 1); i++) {
-            items.push(
-                <PaginationItem key={i}>
-                    <PaginationLink
-                        onClick={() => handlePageChange(i)}
-                        isActive={i === page}
-                    >
-                        {i}
-                    </PaginationLink>
-                </PaginationItem>
-            );
-        }
-
-        if (showEllipsisEnd) {
-            items.push(
-                <PaginationItem key="ellipsis-end">
-                    <PaginationEllipsis />
-                </PaginationItem>
-            );
-        }
-
-        if (totalPages > 1) {
-            items.push(
-                <PaginationItem key={totalPages}>
-                    <PaginationLink
-                        onClick={() => handlePageChange(totalPages)}
-                        isActive={totalPages === page}
-                    >
-                        {totalPages}
-                    </PaginationLink>
-                </PaginationItem>
-            );
-        }
-
-        return items;
-    };
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
 
     return (
         <div>
-            <ArticleList articles={articles} isHome userId={userId} />
-            
-            {totalPages > 1 && (
+            <ArticleList articles={data?.articles || []} isHome userId={userId} />
+
+            {data?.totalPages && data.totalPages > 1 && (
                 <div className="flex justify-center items-center mt-8">
                     <Pagination>
                         <PaginationContent>
@@ -96,12 +62,12 @@ const PaginatedList = ({ articles, userId, page, totalPages }: PaginatedListProp
                                 />
                             </PaginationItem>
 
-                            {renderPaginationItems()}
+                            <PaginationItems totalPages={data.totalPages} currentPage={page} onPageChange={handlePageChange} />
 
                             <PaginationItem>
                                 <PaginationNext
                                     onClick={() => handlePageChange(page + 1)}
-                                    className={page >= totalPages ? 'pointer-events-none opacity-50' : ''}
+                                    className={page >= data.totalPages ? 'pointer-events-none opacity-50' : ''}
                                 />
                             </PaginationItem>
                         </PaginationContent>
@@ -112,4 +78,4 @@ const PaginatedList = ({ articles, userId, page, totalPages }: PaginatedListProp
     );
 };
 
-export default PaginatedList;
+export default memo(PaginatedList);
