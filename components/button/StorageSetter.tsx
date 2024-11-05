@@ -5,7 +5,7 @@ const StorageSetter = ({ token, userId }: { token: string; userId: string; }) =>
     useEffect(() => {
         localStorage.setItem('token', token);
         localStorage.setItem('userId', userId);
-    }, []);
+    }, [token, userId]);
     return (
         <div />
     );
