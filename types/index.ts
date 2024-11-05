@@ -40,7 +40,6 @@ export interface ShareOption {
     name: string;
     icon: React.ReactNode;
     color: string;
-    hoverColor: string;
     shareUrl: (url: string) => string;
 }
 
